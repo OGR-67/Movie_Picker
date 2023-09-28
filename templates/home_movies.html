@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Liste des films</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home.css') }}">
+</head>
+
+<body>
+  <h1>Liste des films</h1>
+
+  <form action="{{ url_for('movies.home_movies') }}" method="GET">
+    <label>Sélectionnez des tags :</label><br>
+    {% for tag in available_tags %}
+    <input type="checkbox" name="tags" value="{{ tag }}" {% if tag in selected_tags %} checked {% endif %}> {{ tag
+    }}<br>
+    {% endfor %}
+    <br>
+    <input type="submit" value="Filtrer">
+  </form>
+
+  <div class="movie-grid">
+    {% for movie in movies %}
+    <div class="movie-card">
+      <img src="{{movie.poster_url}}" alt="{{movie.title}} poster">
+      <h2>{{ movie.title }}</h2>
+      <p>{{movie.release_date }}</p>
+      <div class="genre-tags">
+        {% for genre in movie.genre %}
+        <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <footer>
+    <p>Page {{ page }} / {{ total_pages }}</p>
+    {% if page > 1 %}
+    <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags) }}">Début</a>
+    <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags) }}">Précédent</a>
+    {% endif %}
+    {% if page < total_pages %} <a href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags) }}">
+      Suivant
+      </a>
+      <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags) }}">Fin</a>
+      {% endif %}
+  </footer>
+</body>
+
+</html>
