@@ -1,0 +1,12 @@
+# Cache
+*/**/__pycache__/
+__pycache__/
+
+# Virtual Environment
+.env/
+
+# DB
+instance/
+
+# Editor
+.vscode/
