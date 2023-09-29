@@ -12,11 +12,12 @@ def home_movies():
     page = request.args.get("page")
     page = int(page) if page is not None and page.isdigit() else 1
 
-    selected_tags = request.args.getlist('tags')
+    selected_tags = request.args.getlist('tags') or None
 
     movies_repo = MovieRepositoryImpl(DB_PATH)
-    query_result = MovieService(movies_repo).get_movies(page)
+    query_result = MovieService(movies_repo).get_movies(page, selected_tags)
     movies, total_pages = query_result["movies"], query_result["total_pages"]
+    print(movies[1])
 
     return render_template(
         'home_movies.html',

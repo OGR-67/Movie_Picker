@@ -1,5 +1,5 @@
-from tests.unit.test_utils.movie_repository_fixture import MovieRepositoryFixture
-from tests.unit.test_utils.movie_service_stub import MovieServiceMock
+from tests.unit.test_utils.movies.movie_repository_fixture import MovieRepositoryFixture
+from tests.unit.test_utils.movies.movie_service_stub import MovieServiceMock
 
 
 def given_a_movie_repository(test_case):
@@ -23,7 +23,7 @@ def then_movie_repository_list_movies_was_called_with(test_case, page, filter_ta
     )
 
 
-def then_result_equals_expected_movies(test_case):
+def then_result_equals_expected_movies(test_case, expected_movies):
     test_case.assertEqual(
-        test_case.movie_service.results["movies"], MovieRepositoryFixture.expected_movies
+        test_case.movie_service.results["movies"], expected_movies
     )

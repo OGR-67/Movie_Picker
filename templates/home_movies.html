@@ -12,8 +12,9 @@
   <form action="{{ url_for('movies.home_movies') }}" method="GET">
     <label>Sélectionnez des tags :</label><br>
     {% for tag in available_tags %}
-    <input type="checkbox" name="tags" value="{{ tag }}" {% if tag in selected_tags %} checked {% endif %}> {{ tag
-    }}<br>
+    <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
+      checked {% endif %}{% endif %}>
+    {{ tag}}<br>
     {% endfor %}
     <br>
     <input type="submit" value="Filtrer">

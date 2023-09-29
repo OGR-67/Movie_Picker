@@ -51,7 +51,7 @@ Movies:
 - [ ] remove tag from movie
 - [X] get all movies
 - [ ] get movie by id
-- [ ] filter movies by tags
+- [X] filter movies by tags
 - [ ] filter movies by rating
 - [ ] filter movies by duration
 

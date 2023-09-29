@@ -1,5 +1,5 @@
 from domain.services.movie_service import MovieService
-from tests.unit.test_utils.movie_repository_fixture import MovieRepositoryFixture
+from tests.unit.test_utils.movies.movie_repository_fixture import MovieRepositoryFixture
 
 
 class MovieServiceMock(MovieService):

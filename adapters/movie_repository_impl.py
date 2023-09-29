@@ -6,31 +6,36 @@ from domain.repositories.movie_repository import MovieRepository
 class MovieRepositoryImpl(MovieRepository):
     def __init__(self, db_file):
         self.connect = sqlite3.connect(db_file)
+        self.ITEMS_PER_PAGE = 20
 
     def add_movie(self, movie: Movie):
+        # Not implemented yet
         self.connect.execute("INSERT INTO movies (titre, annee, realisateur, bande_annonce_url) VALUES (?, ?, ?, ?)",
                              (movie.titre, movie.annee, movie.realisateur, movie.bande_annonce_url))
-        self.connect.commit()
+        # self.connect.commit()
 
     def get_movie(self, movie_id):
-        self.connect.execute("SELECT * FROM movies WHERE id=?", (movie_id,))
-        row = self.cursor.fetchone()
-        if row:
-            row["genre"] = self._string_list_to_array(row["genre"])
-            return Movie(*row[1:])
+        # Not implemented yet
+        # self.connect.execute("SELECT * FROM movies WHERE id=?", (movie_id,))
+        # row = self.cursor.fetchone()
+        # if row:
+        #     row["genre"] = self._string_list_to_array(row["genre"])
+        #     return Movie(*row[1:])
         return None
 
-    def list_movies(self, page: int) -> dict:
-        ITEMS_PER_PAGE = 20
-        offset = (page - 1) * ITEMS_PER_PAGE
+    def list_movies(self, page: int, filter_tags=None) -> dict:
 
-        count_cursor = self.connect.execute("SELECT COUNT(*) FROM movies")
-        total_count = count_cursor.fetchone()[0]
+        offset = (page - 1) * self.ITEMS_PER_PAGE
 
-        cursor = self.connect.execute(
-            "SELECT * FROM movies LIMIT ? OFFSET ?", (ITEMS_PER_PAGE, offset))
+        if filter_tags is None:
+            total_count, cursor = self._get_all_movies(offset)
+        else:
+            total_count, cursor = self._get_filtered_movies(
+                filter_tags, offset)
+
         rows = cursor.fetchall()
-        total_pages = (total_count + ITEMS_PER_PAGE - 1) // ITEMS_PER_PAGE
+        total_pages = (total_count + self.ITEMS_PER_PAGE -
+                       1) // self.ITEMS_PER_PAGE
 
         movies = []
         for row in rows:
@@ -46,3 +51,28 @@ class MovieRepositoryImpl(MovieRepository):
     def _string_list_to_array(self, string_list: str) -> list[str]:
         items_array = [item.strip() for item in string_list.split(",")]
         return items_array
+
+    def _get_all_movies(self, offset: int = 0):
+        count_cursor = self.connect.execute("SELECT COUNT(*) FROM movies")
+        total_count = count_cursor.fetchone()[0]
+
+        cursor = self.connect.execute(
+            "SELECT * FROM movies LIMIT ? OFFSET ?", (self.ITEMS_PER_PAGE, offset))
+        return total_count, cursor
+
+    def _get_filtered_movies(self, filter_tags, offset):
+        params = ["%" + tag + "%" for tag in filter_tags]
+
+        sql = "SELECT COUNT(*) FROM movies WHERE " + " OR ".join(
+            ["genre LIKE ?" for _ in filter_tags]
+        )
+        count_cursor = self.connect.execute(sql, params)
+        total_count = count_cursor.fetchone()[0]
+
+        sql = "SELECT * FROM movies WHERE " + " OR ".join(
+            ["genre LIKE ?" for _ in filter_tags]
+        ) + " LIMIT ? OFFSET ?"
+        cursor = self.connect.execute(
+            sql, (*params, self.ITEMS_PER_PAGE, offset))
+
+        return total_count, cursor
