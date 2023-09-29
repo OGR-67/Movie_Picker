@@ -14,10 +14,13 @@ def home_movies():
 
     selected_tags = request.args.getlist('tags') or None
 
+    min_rating = request.args.get("min_rating")
+    min_rating = int(min_rating) if min_rating else 0
+
     movies_repo = MovieRepositoryImpl(DB_PATH)
-    query_result = MovieService(movies_repo).get_movies(page, selected_tags)
+    query_result = MovieService(movies_repo).get_movies(
+        page, selected_tags, min_rating)
     movies, total_pages = query_result["movies"], query_result["total_pages"]
-    print(movies[1])
 
     return render_template(
         'home_movies.html',
@@ -25,7 +28,8 @@ def home_movies():
         page=page,
         total_pages=total_pages,
         selected_tags=selected_tags,
-        available_tags=AVAILABLE_GENRE
+        available_tags=AVAILABLE_GENRE,
+        min_rating=min_rating
     )
 
 # TODO: more movie routes here...

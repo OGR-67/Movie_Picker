@@ -12,5 +12,5 @@ class MovieRepository(ABC):
         pass
 
     @abstractmethod
-    def list_movies(self, page: int, filter_tags=None) -> dict:
+    def list_movies(self, page: int, filter_tags=None, min_rating=0) -> dict:
         pass

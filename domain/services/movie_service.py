@@ -9,7 +9,7 @@ class MovieService:
     def get_movie_by_id(self, movie_id) -> Movie:
         return self.movie_repository.get_movie(movie_id)
 
-    def get_movies(self, page: int, filter_tags=None) -> dict:
+    def get_movies(self, page: int, filter_tags=None, min_rating=0) -> dict:
         """
         Retrieves a list of movies from the repository with pagination.
 
@@ -21,4 +21,4 @@ class MovieService:
         Returns:
             dict: A dictionary containing the list of movies and the total number of pages.
         """
-        return self.movie_repository.list_movies(page, filter_tags=filter_tags)
+        return self.movie_repository.list_movies(page, filter_tags=filter_tags, min_rating=min_rating)

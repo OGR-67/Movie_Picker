@@ -12,14 +12,16 @@ def given_a_movie_service(test_case):
     )
 
 
-def when_get_movies(test_case, filter_tags=None):
-    test_case.movie_service.get_movies(page=1, filter_tags=filter_tags)
+def when_get_movies(test_case, filter_tags=None, min_rating=0):
+    test_case.movie_service.get_movies(
+        page=1, filter_tags=filter_tags, min_rating=min_rating)
 
 
-def then_movie_repository_list_movies_was_called_with(test_case, page, filter_tags):
+def then_movie_repository_list_movies_was_called_with(test_case, page, filter_tags=None, min_rating=0):
     test_case.movie_repository.list_movies.assert_called_once_with(
         page,
-        filter_tags
+        filter_tags,
+        min_rating
     )
 
 

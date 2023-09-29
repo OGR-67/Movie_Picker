@@ -7,9 +7,11 @@ class MovieServiceMock(MovieService):
         super().__init__(movie_repository)
         self.results = {"movies": [], "total_pages": 0}
 
-    def get_movies(self, page: int, filter_tags) -> dict:
+    def get_movies(self, page: int, filter_tags=None, min_rating=0) -> dict:
         MovieRepositoryFixture.set_return_value(
             self.movie_repository,
-            filter_tags=filter_tags
+            filter_tags=filter_tags,
+            min_rating=min_rating
         )
-        self.results = self.movie_repository.list_movies(page, filter_tags)
+        self.results = self.movie_repository.list_movies(
+            page, filter_tags, min_rating)

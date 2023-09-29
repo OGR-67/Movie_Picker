@@ -23,15 +23,18 @@ class MovieRepositoryImpl(MovieRepository):
         #     return Movie(*row[1:])
         return None
 
-    def list_movies(self, page: int, filter_tags=None) -> dict:
+    def list_movies(self, page: int, filter_tags=None, min_rating=0) -> dict:
 
         offset = (page - 1) * self.ITEMS_PER_PAGE
 
         if filter_tags is None:
-            total_count, cursor = self._get_all_movies(offset)
+            total_count, cursor = self._get_all_movies(min_rating, offset)
         else:
             total_count, cursor = self._get_filtered_movies(
-                filter_tags, offset)
+                filter_tags,
+                offset,
+                min_rating
+            )
 
         rows = cursor.fetchall()
         total_pages = (total_count + self.ITEMS_PER_PAGE -
@@ -52,27 +55,28 @@ class MovieRepositoryImpl(MovieRepository):
         items_array = [item.strip() for item in string_list.split(",")]
         return items_array
 
-    def _get_all_movies(self, offset: int = 0):
-        count_cursor = self.connect.execute("SELECT COUNT(*) FROM movies")
+    def _get_all_movies(self, min_rating, offset: int = 0):
+        count_cursor = self.connect.execute(
+            "SELECT COUNT(*) FROM movies WHERE vote_average > ?", (min_rating,))
         total_count = count_cursor.fetchone()[0]
 
         cursor = self.connect.execute(
-            "SELECT * FROM movies LIMIT ? OFFSET ?", (self.ITEMS_PER_PAGE, offset))
+            "SELECT * FROM movies WHERE vote_average > ? LIMIT ? OFFSET ?", (min_rating, self.ITEMS_PER_PAGE, offset))
         return total_count, cursor
 
-    def _get_filtered_movies(self, filter_tags, offset):
+    def _get_filtered_movies(self, filter_tags, offset, min_rating=0):
         params = ["%" + tag + "%" for tag in filter_tags]
 
-        sql = "SELECT COUNT(*) FROM movies WHERE " + " OR ".join(
+        sql = "SELECT COUNT(*) FROM movies WHERE vote_average > ? AND (" + " OR ".join(
             ["genre LIKE ?" for _ in filter_tags]
-        )
-        count_cursor = self.connect.execute(sql, params)
+        ) + ")"
+        count_cursor = self.connect.execute(sql, (min_rating, *params))
         total_count = count_cursor.fetchone()[0]
 
-        sql = "SELECT * FROM movies WHERE " + " OR ".join(
+        sql = "SELECT * FROM movies WHERE vote_average > ? AND (" + " OR ".join(
             ["genre LIKE ?" for _ in filter_tags]
-        ) + " LIMIT ? OFFSET ?"
+        ) + ") LIMIT ? OFFSET ?"
         cursor = self.connect.execute(
-            sql, (*params, self.ITEMS_PER_PAGE, offset))
+            sql, (min_rating, *params, self.ITEMS_PER_PAGE, offset))
 
         return total_count, cursor

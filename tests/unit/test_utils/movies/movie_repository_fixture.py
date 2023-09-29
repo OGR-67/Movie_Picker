@@ -12,7 +12,7 @@ class MovieRepositoryFixture:
         f"2000-02-0{i}",
         f"poster {i}",
         f"genre {i}",
-        f"vote_average {i}"
+        f"{i}"
     ) for i in range(1, 9)]
 
     @staticmethod
@@ -21,16 +21,20 @@ class MovieRepositoryFixture:
         return repository
 
     @staticmethod
-    def set_return_value(repository, filter_tags: list = None):
-        if filter_tags is None:
-            repository.list_movies.return_value = {
-                "movies": MovieRepositoryFixture.movies,
-                "total_pages": 1
-            }
+    def set_return_value(repository, filter_tags=None, min_rating=0):
+        movie_list = []
+        if filter_tags:
+            movie_list = [
+                movie for movie in MovieRepositoryFixture.movies
+                if movie.genre in filter_tags and float(movie.vote_average) > min_rating
+            ]
         else:
             movie_list = [
-                movie for movie in MovieRepositoryFixture.movies if movie.genre in filter_tags]
-            repository.list_movies.return_value = {
-                "movies": movie_list,
-                "total_pages": 1
-            }
+                movie for movie in MovieRepositoryFixture.movies
+                if float(movie.vote_average) > min_rating
+            ]
+
+        repository.list_movies.return_value = {
+            "movies": movie_list,
+            "total_pages": 1
+        }

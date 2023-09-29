@@ -17,6 +17,8 @@
     {{ tag}}<br>
     {% endfor %}
     <br>
+    <label>Note minimale :</label>
+    <input type="number" name="min_rating" min="0" max="10" value="{{ min_rating }}">
     <input type="submit" value="Filtrer">
   </form>
 
@@ -37,13 +39,14 @@
   <footer>
     <p>Page {{ page }} / {{ total_pages }}</p>
     {% if page > 1 %}
-    <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags) }}">Début</a>
-    <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags) }}">Précédent</a>
+    <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags, min_rating=min_rating) }}">Début</a>
+    <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags, min_rating=min_rating) }}">Précédent</a>
     {% endif %}
-    {% if page < total_pages %} <a href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags) }}">
+    {% if page < total_pages %} <a
+      href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags, min_rating=min_rating) }}">
       Suivant
       </a>
-      <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags) }}">Fin</a>
+      <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
       {% endif %}
   </footer>
 </body>
