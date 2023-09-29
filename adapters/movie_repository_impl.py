@@ -1,6 +1,6 @@
 import sqlite3
-from domain.movie import Movie
-from repositories.movie_repository import MovieRepository
+from domain.entities.movie import Movie
+from domain.repositories.movie_repository import MovieRepository
 
 
 class MovieRepositoryImpl(MovieRepository):
@@ -20,7 +20,7 @@ class MovieRepositoryImpl(MovieRepository):
             return Movie(*row[1:])
         return None
 
-    def list_movies(self, page):
+    def list_movies(self, page: int) -> dict:
         ITEMS_PER_PAGE = 20
         offset = (page - 1) * ITEMS_PER_PAGE
 
@@ -43,6 +43,6 @@ class MovieRepositoryImpl(MovieRepository):
             "total_pages": total_pages
         }
 
-    def _string_list_to_array(self, string_list):
+    def _string_list_to_array(self, string_list: str) -> list[str]:
         items_array = [item.strip() for item in string_list.split(",")]
         return items_array
