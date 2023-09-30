@@ -10,5 +10,7 @@ migrate = Migrate(app, db)
 
 app.register_blueprint(movie_bp)
 
+__all__ = ["app", "db"]
+
 if __name__ == "__main__":
     app.run()

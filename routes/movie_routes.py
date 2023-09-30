@@ -8,14 +8,20 @@ movie_bp = Blueprint('movies', __name__)
 
 
 @movie_bp.route('/')
-def home_movies():
-    page = request.args.get("page")
-    page = int(page) if page is not None and page.isdigit() else 1
+def home_movies() -> str:
+    page_str = request.args.get("page")
+    if page_str is None or not page_str.isdigit():
+        page = 1
+    else:
+        page = int(page_str)
 
     selected_tags = request.args.getlist('tags') or None
 
-    min_rating = request.args.get("min_rating")
-    min_rating = int(min_rating) if min_rating else 0
+    min_rating_str = request.args.get("min_rating")
+    if min_rating_str is None or not min_rating_str.isdigit():
+        min_rating = 0
+    else:
+        min_rating = int(min_rating_str)
 
     movies_repo = MovieRepositoryImpl(DB_PATH)
     query_result = MovieService(movies_repo).get_movies(

@@ -6,7 +6,7 @@ from flask import Flask
 csv_file_path = "datas/mymoviedb.csv"
 
 
-def feed():
+def feed() -> None:
     with app.app_context():
         with open(csv_file_path, newline="", encoding="utf-8") as file:
             csv_reader = csv.DictReader(file)
@@ -21,7 +21,7 @@ def feed():
                     genre=line["Genre"],
                     vote_average=float(
                         line["Vote_Average"]
-                    ) if line["Vote_Average"] else None,
+                    ),
                 )
 
                 db.session.add(movie)

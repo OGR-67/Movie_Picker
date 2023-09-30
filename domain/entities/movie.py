@@ -10,7 +10,7 @@ class Movie:
     summary: str
     release_date: date
     poster_url: str
-    genre: list
+    genre: list[str]
     vote_average: float
 
 

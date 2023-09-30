@@ -1,21 +1,22 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy.model import Model
 
-db = SQLAlchemy()
+db: SQLAlchemy = SQLAlchemy()
 
 
-class Movie(db.Model):
+class Movie(Model):
     __tablename__ = 'movies'
 
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
-    original_language = db.Column(db.String(50))
-    summary = db.Column(db.String(500))
-    release_date = db.Column(db.String(10))
-    poster_url = db.Column(db.String(255))
-    genre = db.Column(db.String(100))
-    vote_average = db.Column(db.Float)
+    id: int = db.Column(db.Integer, primary_key=True)
+    title: str = db.Column(db.String(255), nullable=False)
+    original_language: str = db.Column(db.String(50))
+    summary: str = db.Column(db.String(500))
+    release_date: str = db.Column(db.String(10))
+    poster_url: str = db.Column(db.String(255))
+    genre: str = db.Column(db.String(100))
+    vote_average: float = db.Column(db.Float)
 
-    def __init__(self, title, original_language, summary, release_date, poster_url, genre, vote_average):
+    def __init__(self, title: str, original_language: str, summary: str, release_date: str, poster_url: str, genre: str, vote_average: float):
         self.title = title
         self.original_language = original_language
         self.summary = summary

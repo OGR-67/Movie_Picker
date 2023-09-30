@@ -1,29 +1,36 @@
 import sqlite3
+from typing import Any
 from domain.entities.movie import Movie
 from domain.repositories.movie_repository import MovieRepository
 
 
 class MovieRepositoryImpl(MovieRepository):
-    def __init__(self, db_file):
+    def __init__(self, db_file: str):
         self.connect = sqlite3.connect(db_file)
         self.ITEMS_PER_PAGE = 20
 
-    def add_movie(self, movie: Movie):
+    def add_movie(self, movie: Movie) -> Movie:
         # Not implemented yet
-        self.connect.execute("INSERT INTO movies (titre, annee, realisateur, bande_annonce_url) VALUES (?, ?, ?, ?)",
-                             (movie.titre, movie.annee, movie.realisateur, movie.bande_annonce_url))
+        self.connect.execute("INSERT INTO movies (title, original_language, summary, release_date, poster_url, genre, vote_average) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                             (movie.title, movie.original_language, movie.summary, movie.release_date, movie.poster_url, ", ".join(movie.genre), movie.vote_average))
         # self.connect.commit()
+        return movie
 
-    def get_movie(self, movie_id):
+    def get_movie(self, movie_id: int) -> Movie:
         # Not implemented yet
-        # self.connect.execute("SELECT * FROM movies WHERE id=?", (movie_id,))
-        # row = self.cursor.fetchone()
-        # if row:
-        #     row["genre"] = self._string_list_to_array(row["genre"])
-        #     return Movie(*row[1:])
-        return None
+        cursor = self.connect.execute(
+            "SELECT * FROM movies WHERE id=?", (movie_id,))
+        row = cursor.fetchone()
+        if row:
+            row["genre"] = self._string_list_to_array(row["genre"])
+        return Movie(*row[1:])
 
-    def list_movies(self, page: int, filter_tags=None, min_rating=0) -> dict:
+    def list_movies(
+        self,
+        page: int,
+        filter_tags: list[str] | None = None,
+        min_rating: float = 0.0
+    ) -> dict[str, Any]:
 
         offset = (page - 1) * self.ITEMS_PER_PAGE
 
@@ -46,7 +53,7 @@ class MovieRepositoryImpl(MovieRepository):
             "total_pages": total_pages
         }
 
-    def _convert_rows_to_movies(self, rows):
+    def _convert_rows_to_movies(self, rows: list[Any]) -> list[Movie]:
         movies = []
         for row in rows:
             GENRE_INDEX = 6
@@ -59,7 +66,7 @@ class MovieRepositoryImpl(MovieRepository):
         items_array = [item.strip() for item in string_list.split(",")]
         return items_array
 
-    def _get_all_movies(self, min_rating, offset: int = 0):
+    def _get_all_movies(self, min_rating: float, offset: int = 0) -> tuple[int, sqlite3.Cursor]:
         count_cursor = self.connect.execute(
             "SELECT COUNT(*) FROM movies WHERE vote_average > ?", (min_rating,))
         total_count = count_cursor.fetchone()[0]
@@ -68,7 +75,12 @@ class MovieRepositoryImpl(MovieRepository):
             "SELECT * FROM movies WHERE vote_average > ? LIMIT ? OFFSET ?", (min_rating, self.ITEMS_PER_PAGE, offset))
         return total_count, cursor
 
-    def _get_filtered_movies(self, filter_tags, offset, min_rating=0):
+    def _get_filtered_movies(
+        self,
+        filter_tags: list[str],
+        offset: int,
+        min_rating: float = 0
+    ) -> tuple[int, sqlite3.Cursor]:
         params = ["%" + tag + "%" for tag in filter_tags]
 
         sql = "SELECT COUNT(*) FROM movies WHERE vote_average > ? AND (" + " OR ".join(
