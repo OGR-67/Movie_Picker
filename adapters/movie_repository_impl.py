@@ -40,16 +40,20 @@ class MovieRepositoryImpl(MovieRepository):
         total_pages = (total_count + self.ITEMS_PER_PAGE -
                        1) // self.ITEMS_PER_PAGE
 
+        movies = self._convert_rows_to_movies(rows)
+        return {
+            "movies": movies,
+            "total_pages": total_pages
+        }
+
+    def _convert_rows_to_movies(self, rows):
         movies = []
         for row in rows:
             GENRE_INDEX = 6
             row = list(row)
             row[GENRE_INDEX] = self._string_list_to_array(row[GENRE_INDEX])
             movies.append(Movie(*row))
-        return {
-            "movies": movies,
-            "total_pages": total_pages
-        }
+        return movies
 
     def _string_list_to_array(self, string_list: str) -> list[str]:
         items_array = [item.strip() for item in string_list.split(",")]

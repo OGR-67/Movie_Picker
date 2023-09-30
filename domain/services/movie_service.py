@@ -1,4 +1,4 @@
-from models.movie_model import Movie
+from domain.entities.movie import Movie
 from domain.repositories.movie_repository import MovieRepository
 
 

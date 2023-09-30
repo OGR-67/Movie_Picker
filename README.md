@@ -20,16 +20,26 @@ This project provides me with the opportunity to explore several domains and lea
 
 - install python >= 3.11
 - create a virtual environment
+- activate the virtual environment
 - install dependencies with `pip install -r requirements.txt`
 
 ## Set up database
 
+- be sure to have the virtual environment activated
 - run `touch instance/movies_db.db`
 - run `flask db upgrade`
 
 ## How to run
 
+- be sure to have the virtual environment activated
 - run `python app.py` to run in develpment mode
+
+## How to run tests
+
+- be sure to have the virtual environment activated
+- run `export PYTHONPATH=.` when on root directory of the project
+- run `pytest` to run all tests
+- run `pwt` to run all tests in watch mode
 
 ## Features
 
@@ -52,16 +62,11 @@ Movies:
 - [X] get all movies
 - [ ] get movie by id
 - [X] filter movies by tags
-- [ ] filter movies by rating
+- [X] filter movies by rating
 - [ ] filter movies by duration
-
-## Tests
-
-- run `pytest` to run all tests
-- run `pwt` to run all tests in watch mode
 
 ## Trouble Shooting
 
 ### 1. Error: Could not run pytest or pytest-watch
 
-Try to run `set PYTHONPATH=.` when on root directory of the project. `pwt` or `pytest` should work after that.
+Try to run `export PYTHONPATH=.` when on root directory of the project. `pwt` or `pytest` should work after that.
