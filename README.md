@@ -18,10 +18,24 @@ This project provides me with the opportunity to explore several domains and lea
 
 ## Installation
 
+### Requirements
+
 - install python >= 3.11
 - create a virtual environment
 - activate the virtual environment
 - install dependencies with `pip install -r requirements.txt`
+
+### Optional
+
+#### MyPy
+
+mypy is used for type checking
+
+- run `export PROJECT_DIR=$(pwd)`
+- run `dmypy run` to run mypy daemon
+
+You can now run `dmypy status` to check for errors
+Or `dmypy check` to check for errors and exit
 
 ## Set up database
 
@@ -63,6 +77,12 @@ Movies:
 - [ ] get movie by id
 - [X] filter movies by tags
 - [X] filter movies by rating
+
+## Optimizations
+
+- [ ] image lazy loading
+- [X] pagination
+- [ ] style
 
 ## Trouble Shooting
 

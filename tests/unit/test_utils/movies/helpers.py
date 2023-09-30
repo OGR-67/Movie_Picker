@@ -52,3 +52,30 @@ def then_result_equals_expected_movies(
     test_case.assertEqual(
         test_case.movie_service.results["movies"], expected_movies
     )
+
+
+def when_get_movie_by_id(
+    test_case: CustomTestCase,
+    movie_id: int
+) -> None:
+    test_case.movie_service.get_movie_by_id(movie_id)
+
+
+def then_movie_repository_get_movie_was_called_with(
+    test_case: CustomTestCase,
+    movie_id: int
+) -> None:
+    # We're using mocks in this test, which can lead to type checking errors.
+    # Ignoring type here to suppress those errors since we're not testing
+    # type correctness in this specific context.
+    test_case.movie_repository.get_movie.assert_called_once_with(  # type: ignore
+        movie_id)
+
+
+def then_result_equals_expected_movie(
+    test_case: CustomTestCase,
+    expected_movie: Movie | None
+) -> None:
+    test_case.assertEqual(
+        test_case.movie_service.result, expected_movie
+    )

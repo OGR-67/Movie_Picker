@@ -4,6 +4,7 @@ __pycache__/
 
 # Virtual Environment
 .env/
+.venv/
 
 # DB
 instance/

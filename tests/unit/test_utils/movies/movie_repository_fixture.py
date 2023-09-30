@@ -22,7 +22,7 @@ class MovieRepositoryFixture:
         return repository
 
     @staticmethod
-    def set_return_value(
+    def set_get_movies_return_value(
         repository: Mock,
         filter_tags: list[str] | None = None,
         min_rating: float = 0
@@ -43,3 +43,14 @@ class MovieRepositoryFixture:
             "movies": movie_list,
             "total_pages": 1
         }
+
+    @staticmethod
+    def set_get_movie_return_value(
+        repository: Mock,
+        movie_id: int
+    ) -> None:
+        try:
+            movie = MovieRepositoryFixture.movies[movie_id - 1]
+        except IndexError:
+            movie = None
+        repository.get_movie.return_value = movie
