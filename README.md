@@ -63,7 +63,6 @@ Movies:
 - [ ] get movie by id
 - [X] filter movies by tags
 - [X] filter movies by rating
-- [ ] filter movies by duration
 
 ## Trouble Shooting
 
