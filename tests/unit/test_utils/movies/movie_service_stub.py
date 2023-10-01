@@ -2,11 +2,11 @@ from typing import Any
 from unittest.mock import Mock
 from domain.entities.movie import Movie
 from domain.repositories.movie_repository import MovieRepository
-from domain.services.movie_service import MovieService
+from domain.services.movie_service import MovieServiceInterface
 from tests.unit.test_utils.movies.movie_repository_fixture import MovieRepositoryFixture
 
 
-class MovieServiceMock(MovieService):
+class MovieServiceMock(MovieServiceInterface):
     def __init__(self, movie_repository: MovieRepository):
         super().__init__(movie_repository)
         self.results: dict[str, Any] = {

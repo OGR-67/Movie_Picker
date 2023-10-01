@@ -24,10 +24,14 @@
 
   <div class="movie-grid">
     {% for movie in movies %}
-    <div class="movie-card">
+    <div class="movie-card" id="{{movie.id}}">
       <img src="{{movie.poster_url}}" alt="{{movie.title}} poster">
       <h2>{{ movie.title }}</h2>
-      <p>{{movie.release_date }}</p>
+      <p>{{ movie.release_date }}</p>
+      <p>{{ movie.vote_average}}</p>
+      <p>{{ movie.id }}</p>
+
+
       <div class="genre-tags">
         {% for genre in movie.genre %}
         <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
@@ -49,6 +53,16 @@
       <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
       {% endif %}
   </footer>
+
+  <script>
+    const cards = document.querySelectorAll('.movie-card');
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const movieId = +card.id;
+        window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
+      });
+    });
+  </script>
 </body>
 
 </html>

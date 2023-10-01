@@ -38,4 +38,14 @@ def home_movies() -> str:
         min_rating=min_rating
     )
 
+
+@movie_bp.route('/<int:movie_id>')
+def movie_detail(movie_id: int) -> str:
+    movies_repo = MovieRepositoryImpl(DB_PATH)
+    movie = MovieService(movies_repo).get_movie_by_id(movie_id)
+    return render_template(
+        'movie_detail.html',
+        movie=movie
+    )
+
 # TODO: more movie routes here...

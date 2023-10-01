@@ -62,19 +62,25 @@ Users:
 - [ ] create user
 - [ ] login
 - [ ] logout
-- [ ] add movie to favorites
-- [ ] remove movie from favorites
-- [ ] add movie to watchlist
-- [ ] remove movie from watchlist
+
+favorites:
+
+- [ ] add movie - depends on: Users
+- [ ] remove movie - depends on: Users
+
+Watchlist:
+
+- [ ] add movie - depends on: Users
+- [ ] remove movie - depends on: Users
 
 Movies:
 
-- [ ] add movie
-- [ ] remove movie
-- [ ] add tag to movie
-- [ ] remove tag from movie
+- [ ] add movie - depends on: Users
+- [ ] remove movie - depends on: Users
+- [ ] add tag to movie - depends on: Users
+- [ ] remove tag from movie - depends on: Users
 - [X] get all movies
-- [ ] get movie by id
+- [X] get movie by id
 - [X] filter movies by tags
 - [X] filter movies by rating
 

@@ -17,13 +17,14 @@ class MovieRepositoryImpl(MovieRepository):
         return movie
 
     def get_movie(self, movie_id: int) -> Movie:
-        # Not implemented yet
         cursor = self.connect.execute(
             "SELECT * FROM movies WHERE id=?", (movie_id,))
         row = cursor.fetchone()
+        GENRE_INDEX = 6
         if row:
-            row["genre"] = self._string_list_to_array(row["genre"])
-        return Movie(*row[1:])
+            row = list(row)
+            row[GENRE_INDEX] = self._string_list_to_array(row[GENRE_INDEX])
+        return Movie(*row)
 
     def list_movies(
         self,

@@ -1,8 +1,8 @@
 /* Styles pour la grille de films */
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 films par ligne */
-    gap: 20px; /* Espacement entre les cartes */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
 }
 
 /* Styles pour les cartes de film */
@@ -12,6 +12,7 @@
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
 .movie-card img {
