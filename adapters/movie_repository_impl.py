@@ -16,7 +16,7 @@ class MovieRepositoryImpl(MovieRepository):
         # self.connect.commit()
         return movie
 
-    def get_movie(self, movie_id: int) -> Movie:
+    def get_movie(self, movie_id: int) -> Movie | None:
         cursor = self.connect.execute(
             "SELECT * FROM movies WHERE id=?", (movie_id,))
         row = cursor.fetchone()
@@ -24,7 +24,8 @@ class MovieRepositoryImpl(MovieRepository):
         if row:
             row = list(row)
             row[GENRE_INDEX] = self._string_list_to_array(row[GENRE_INDEX])
-        return Movie(*row)
+            return Movie(*row)
+        return None
 
     def list_movies(
         self,

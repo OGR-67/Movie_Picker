@@ -9,7 +9,7 @@ class MovieRepository(ABC):
         pass
 
     @abstractmethod
-    def get_movie(self, movie_id: int) -> Movie:
+    def get_movie(self, movie_id: int) -> Movie | None:
         pass
 
     @abstractmethod

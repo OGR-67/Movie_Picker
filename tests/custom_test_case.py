@@ -1,11 +1,14 @@
 from unittest import TestCase
 
 from domain.repositories.movie_repository import MovieRepository
-from domain.services.movie_service import MovieService
-from tests.unit.test_utils.movies.movie_repository_fixture import MovieRepositoryFixture
-from tests.unit.test_utils.movies.movie_service_stub import MovieServiceMock
+from domain.repositories.user_repository import UserRepository
+from domain.services.movie_service import MovieServiceInterface
+from domain.services.user_service import UserServiceInterface
 
 
 class CustomTestCase(TestCase):
     movie_repository: MovieRepository
-    movie_service: MovieServiceMock
+    movie_service: MovieServiceInterface
+
+    user_repository: UserRepository
+    user_service: UserServiceInterface

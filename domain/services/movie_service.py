@@ -9,7 +9,7 @@ class MovieServiceInterface(ABC):
         self.movie_repository = movie_repository
 
     @abstractmethod
-    def get_movie_by_id(self, movie_id: int) -> Movie:
+    def get_movie_by_id(self, movie_id: int) -> Movie | None:
         pass
 
     @abstractmethod
@@ -26,7 +26,7 @@ class MovieService(MovieServiceInterface):
     def __init__(self, movie_repository: MovieRepository):
         super().__init__(movie_repository)
 
-    def get_movie_by_id(self, movie_id: int) -> Movie:
+    def get_movie_by_id(self, movie_id: int) -> Movie | None:
         return self.movie_repository.get_movie(movie_id)
 
     def get_movies(

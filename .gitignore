@@ -11,3 +11,8 @@ instance/
 
 # Editor
 .vscode/
+
+# tests
+.dmypy.json
+.mypy_cache/
+pytest_cache/

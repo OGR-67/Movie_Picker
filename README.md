@@ -59,19 +59,19 @@ Or `dmypy check` to check for errors and exit
 
 Users:
 
-- [ ] create user
+- [ ] create user / register
 - [ ] login
 - [ ] logout
 
 favorites:
 
-- [ ] add movie - depends on: Users
-- [ ] remove movie - depends on: Users
+- [ ] add movie - depends on: Users, Movies
+- [ ] remove movie - depends on: Users, Movies
 
 Watchlist:
 
-- [ ] add movie - depends on: Users
-- [ ] remove movie - depends on: Users
+- [ ] add movie - depends on: Users, Movies
+- [ ] remove movie - depends on: Users, Movies
 
 Movies:
 
