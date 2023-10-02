@@ -3,21 +3,11 @@ from typing import Any
 from adapters.movie_repository_impl import MovieRepositoryImpl
 from domain.entities.movie import Movie
 from domain.repositories.movie_repository import MovieRepository
-from paths import DB_PATH
 from tests.custom_test_case import CustomTestCase
 
 
-def given_a_db_connection() -> sqlite3.Connection:
-    return sqlite3.connect(DB_PATH)
-
-
-def rollback_and_close_db_connection(db_conn: sqlite3.Connection) -> None:
-    db_conn.rollback()
-    db_conn.close()
-
-
-def given_a_movie_repository() -> MovieRepository:
-    return MovieRepositoryImpl(DB_PATH)
+def given_a_movie_repository(db_connect: sqlite3.Connection) -> MovieRepository:
+    return MovieRepositoryImpl(db_connect)
 
 
 def when_get_movie_by_id(
@@ -29,6 +19,17 @@ def when_get_movie_by_id(
 
 def then_movie_is_not_found(movie: Movie | None) -> None:
     assert movie is None
+
+
+def given_a_movie_in_db(db_connect: sqlite3.Connection) -> None:
+    cursor = db_connect.cursor()
+    cursor.execute(
+        """
+        INSERT INTO movies (title, original_language, summary, release_date, poster_url, genre, vote_average)
+        VALUES ("test_title", "test_original_language", "test_summary", "test_release_date", "test_poster_url", "test_genre", 1.0)
+        """
+    )
+    db_connect.commit()
 
 
 def then_movie_is_found(
@@ -81,6 +82,15 @@ def then_movies_are_filtered(
         0
     )
     test_case.assertLess(
-        filtered_results["total_pages"],
-        non_filtered_results["total_pages"]
+        len(filtered_results["movies"]),
+        len(non_filtered_results["movies"])
     )
+
+
+def then_no_movies_are_found(
+    test_case: CustomTestCase,
+    results: dict[str, Any]
+) -> None:
+    test_case.assertIsInstance(results["movies"], list)
+    test_case.assertEqual(len(results["movies"]), 0)
+    test_case.assertIsInstance(results["total_pages"], int)

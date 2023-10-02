@@ -29,3 +29,11 @@ def then_error_message_is_username_already_exists(test_case: CustomTestCase, exc
 
 def then_error_message_is_password_too_short(test_case: CustomTestCase, exception: Exception) -> None:
     test_case.assertEqual(str(exception), 'Password too short')
+
+
+def then_error_message_is_username_too_short(test_case: CustomTestCase, exception: Exception) -> None:
+    test_case.assertEqual(str(exception), 'Username too short')
+
+
+def then_error_message_is_username_cannot_contain_spaces(test_case: CustomTestCase, exception: Exception) -> None:
+    test_case.assertEqual(str(exception), 'Username cannot contain spaces')

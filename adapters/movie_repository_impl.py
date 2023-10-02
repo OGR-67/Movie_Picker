@@ -5,8 +5,8 @@ from domain.repositories.movie_repository import MovieRepository
 
 
 class MovieRepositoryImpl(MovieRepository):
-    def __init__(self, db_file: str):
-        self.connect = sqlite3.connect(db_file)
+    def __init__(self, connection: sqlite3.Connection):
+        self.connect = connection
         self.ITEMS_PER_PAGE = 20
 
     def add_movie(self, movie: Movie) -> Movie:

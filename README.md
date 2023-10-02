@@ -43,6 +43,22 @@ Or `dmypy check` to check for errors and exit
 - run `touch instance/movies_db.db`
 - run `flask db upgrade`
 
+### Create migration
+
+- be sure to have the virtual environment activated
+- run `flask db migrate -m "message" --skip Movie` to create a migration
+
+movies table is skipped because table is already created with raw sql
+Model Movie is still used in `feed_db.py` script.
+
+To apply migrations run `flask db upgrade`
+To revert last migration run `flask db downgrade`
+
+### Feed database
+
+- be sure to have the virtual environment activated
+- run `python feed_db.py` to feed the database with movies
+
 ## How to run
 
 - be sure to have the virtual environment activated
