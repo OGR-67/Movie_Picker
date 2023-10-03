@@ -11,8 +11,26 @@ class MovieRepositoryImpl(MovieRepository):
 
     def add_movie(self, movie: Movie) -> Movie:
         # Not implemented yet
-        self.connect.execute("INSERT INTO movies (title, original_language, summary, release_date, poster_url, genre, vote_average) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                             (movie.title, movie.original_language, movie.summary, movie.release_date, movie.poster_url, ", ".join(movie.genre), movie.vote_average))
+        self.connect.execute(
+            """INSERT INTO movies (
+                title,
+                original_language,
+                summary,
+                release_date,
+                poster_url,
+                genre,
+                vote_average
+                )
+            VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (
+                movie.title,
+                movie.original_language,
+                movie.summary,
+                movie.release_date,
+                movie.poster_url,
+                ", ".join(movie.genre),
+                movie.vote_average
+            ))
         # self.connect.commit()
         return movie
 
@@ -68,13 +86,21 @@ class MovieRepositoryImpl(MovieRepository):
         items_array = [item.strip() for item in string_list.split(",")]
         return items_array
 
-    def _get_all_movies(self, min_rating: float, offset: int = 0) -> tuple[int, sqlite3.Cursor]:
+    def _get_all_movies(
+        self,
+        min_rating: float,
+        offset: int = 0
+    ) -> tuple[int, sqlite3.Cursor]:
         count_cursor = self.connect.execute(
-            "SELECT COUNT(*) FROM movies WHERE vote_average > ?", (min_rating,))
+            "SELECT COUNT(*) FROM movies WHERE vote_average > ?",
+            (min_rating,)
+        )
         total_count = count_cursor.fetchone()[0]
 
         cursor = self.connect.execute(
-            "SELECT * FROM movies WHERE vote_average > ? LIMIT ? OFFSET ?", (min_rating, self.ITEMS_PER_PAGE, offset))
+            "SELECT * FROM movies WHERE vote_average > ? LIMIT ? OFFSET ?",
+            (min_rating, self.ITEMS_PER_PAGE, offset)
+        )
         return total_count, cursor
 
     def _get_filtered_movies(
@@ -85,15 +111,17 @@ class MovieRepositoryImpl(MovieRepository):
     ) -> tuple[int, sqlite3.Cursor]:
         params = ["%" + tag + "%" for tag in filter_tags]
 
-        sql = "SELECT COUNT(*) FROM movies WHERE vote_average > ? AND (" + " OR ".join(
-            ["genre LIKE ?" for _ in filter_tags]
-        ) + ")"
+        sql = "SELECT COUNT(*) FROM movies WHERE vote_average > ? AND (" \
+            + " OR ".join(
+                ["genre LIKE ?" for _ in filter_tags]
+            ) + ")"
         count_cursor = self.connect.execute(sql, (min_rating, *params))
         total_count = count_cursor.fetchone()[0]
 
-        sql = "SELECT * FROM movies WHERE vote_average > ? AND (" + " OR ".join(
-            ["genre LIKE ?" for _ in filter_tags]
-        ) + ") LIMIT ? OFFSET ?"
+        sql = "SELECT * FROM movies WHERE vote_average > ? AND (" \
+            + " OR ".join(
+                ["genre LIKE ?" for _ in filter_tags]
+            ) + ") LIMIT ? OFFSET ?"
         cursor = self.connect.execute(
             sql, (min_rating, *params, self.ITEMS_PER_PAGE, offset))
 

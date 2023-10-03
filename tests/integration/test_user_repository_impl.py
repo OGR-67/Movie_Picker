@@ -1,6 +1,13 @@
 from tests.custom_test_case import CustomTestCase
-from tests.integration.test_utils.commons.db_connection_test import create_test_app, rollback_and_close_db_connection
-from tests.integration.test_utils.users.helpers import given_a_user_repository, then_user_is_registered, then_users_are_found, when_add_user, when_get_users
+from tests.integration.test_utils.commons.db_connection_test import \
+    create_test_app, \
+    rollback_and_close_db_connection
+from tests.integration.test_utils.users.helpers import\
+    given_a_user_repository, \
+    then_user_is_registered, \
+    then_users_are_found, \
+    when_add_user, \
+    when_get_users
 
 
 class TestMovieRepositoryIntegration_Get_Movie(CustomTestCase):

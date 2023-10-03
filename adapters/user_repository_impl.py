@@ -16,7 +16,9 @@ class UserRepositoryImpl(UserRepository):
         try:
             self.connect.execute("BEGIN TRANSACTION")
             cursor = self.connect.execute(
-                "INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+                "INSERT INTO users (username, password) VALUES (?, ?)",
+                (username, password)
+            )
             self.connect.commit()
             if cursor.lastrowid is None:
                 raise Exception('Could not register user')

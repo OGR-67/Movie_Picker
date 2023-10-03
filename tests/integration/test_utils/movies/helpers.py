@@ -6,7 +6,9 @@ from domain.repositories.movie_repository import MovieRepository
 from tests.custom_test_case import CustomTestCase
 
 
-def given_a_movie_repository(db_connect: sqlite3.Connection) -> MovieRepository:
+def given_a_movie_repository(
+    db_connect: sqlite3.Connection
+) -> MovieRepository:
     return MovieRepositoryImpl(db_connect)
 
 
@@ -25,8 +27,24 @@ def given_a_movie_in_db(db_connect: sqlite3.Connection) -> None:
     cursor = db_connect.cursor()
     cursor.execute(
         """
-        INSERT INTO movies (title, original_language, summary, release_date, poster_url, genre, vote_average)
-        VALUES ("test_title", "test_original_language", "test_summary", "test_release_date", "test_poster_url", "test_genre", 1.0)
+        INSERT INTO movies (
+            title,
+            original_language,
+            summary,
+            release_date,
+            poster_url,
+            genre,
+            vote_average
+            )
+        VALUES (
+            "test_title",
+            "test_original_language",
+            "test_summary",
+            "test_release_date",
+            "test_poster_url",
+            "test_genre",
+            1.0
+            )
         """
     )
     db_connect.commit()

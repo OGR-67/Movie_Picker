@@ -44,6 +44,11 @@ class MovieService(MovieServiceInterface):
                 for selecting movies. Defaults to no filters applied.
 
         Returns:
-            dict: A dictionary containing the list of movies and the total number of pages.
+            dict: A dictionary containing the list of movies and the total
+            number of pages.
         """
-        return self.movie_repository.list_movies(page, filter_tags=filter_tags, min_rating=min_rating)
+        return self.movie_repository.list_movies(
+            page,
+            filter_tags=filter_tags,
+            min_rating=min_rating
+        )

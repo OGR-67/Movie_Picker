@@ -1,5 +1,13 @@
 from tests.custom_test_case import CustomTestCase
-from tests.unit.test_utils.users.helpers import given_a_user_repository, given_a_user_service, then_error_message_is_password_too_short, then_error_message_is_username_already_exists, then_error_message_is_username_cannot_contain_spaces, then_error_message_is_username_too_short, then_user_is_registered, when_register
+from tests.unit.test_utils.users.helpers import \
+    given_a_user_repository, \
+    given_a_user_service, \
+    then_error_message_is_password_too_short, \
+    then_error_message_is_username_already_exists, \
+    then_error_message_is_username_cannot_contain_spaces, \
+    then_error_message_is_username_too_short, \
+    then_user_is_registered, \
+    when_register
 
 
 class TestRegister(CustomTestCase):

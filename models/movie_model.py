@@ -16,7 +16,16 @@ class Movie(Model):
     genre: str = db.Column(db.String(100))
     vote_average: float = db.Column(db.Float)
 
-    def __init__(self, title: str, original_language: str, summary: str, release_date: str, poster_url: str, genre: str, vote_average: float):
+    def __init__(
+        self,
+        title: str,
+        original_language: str,
+        summary: str,
+        release_date: str,
+        poster_url: str,
+        genre: str,
+        vote_average: float
+    ):
         self.title = title
         self.original_language = original_language
         self.summary = summary

@@ -1,8 +1,18 @@
 import unittest
 
 from tests.custom_test_case import CustomTestCase
-from tests.integration.test_utils.commons.db_connection_test import create_test_app, rollback_and_close_db_connection
-from tests.integration.test_utils.movies.helpers import given_a_movie_in_db, given_a_movie_repository, then_movie_is_found, then_movie_is_not_found, then_movies_are_filtered, then_movies_are_found, then_no_movies_are_found, when_get_movie_by_id, when_get_movies
+from tests.integration.test_utils.commons.db_connection_test \
+    import create_test_app, rollback_and_close_db_connection
+from tests.integration.test_utils.movies.helpers import \
+    given_a_movie_in_db, \
+    given_a_movie_repository, \
+    then_movie_is_found, \
+    then_movie_is_not_found, \
+    then_movies_are_filtered, \
+    then_movies_are_found, \
+    then_no_movies_are_found, \
+    when_get_movie_by_id, \
+    when_get_movies
 
 
 class TestMovieRepositoryIntegration_Get_Movie(CustomTestCase):

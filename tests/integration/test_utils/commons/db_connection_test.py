@@ -29,7 +29,15 @@ def create_test_app() -> tuple[Connection, Flask]:
         with open(csv_file_path, newline="", encoding="utf-8") as file:
             csv_reader = csv.DictReader(file)
             insert_sql = """
-            INSERT INTO movies (title, original_language, summary, release_date, poster_url, genre, vote_average) 
+            INSERT INTO movies (
+                title,
+                original_language,
+                summary,
+                release_date,
+                poster_url,
+                genre,
+                vote_average
+                )
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """
             for line in csv_reader:

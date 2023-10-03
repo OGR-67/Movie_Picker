@@ -1,7 +1,6 @@
 import csv
 from models.movie_model import Movie
 from app import app, db
-from flask import Flask
 
 csv_file_path = "datas/mymoviedb.csv"
 

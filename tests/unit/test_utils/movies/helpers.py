@@ -3,7 +3,8 @@ from domain.entities.movie import Movie
 from domain.repositories.movie_repository import MovieRepository
 from domain.services.movie_service import MovieService, MovieServiceInterface
 from tests.custom_test_case import CustomTestCase
-from tests.unit.test_utils.movies.movie_repository_fixture import MovieRepositoryFixture
+from tests.unit.test_utils.movies.movie_repository_fixture import\
+    MovieRepositoryFixture
 
 
 def given_a_movie_repository() -> MovieRepository:

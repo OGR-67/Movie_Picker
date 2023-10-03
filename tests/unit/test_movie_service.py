@@ -1,8 +1,13 @@
 import unittest
 from domain.entities.movie import Movie
 from tests.custom_test_case import CustomTestCase
-from tests.unit.test_utils.movies.movie_repository_fixture import MovieRepositoryFixture
-from tests.unit.test_utils.movies.helpers import given_a_movie_repository, given_a_movie_service, given_a_set_of_movies, then_result_equals_expected_movie, then_results_equals_expected_movies, when_get_movie_by_id, when_get_movies
+from tests.unit.test_utils.movies.helpers import \
+    given_a_movie_repository, \
+    given_a_movie_service, \
+    given_a_set_of_movies, \
+    then_result_equals_expected_movie, \
+    then_results_equals_expected_movies, \
+    when_get_movie_by_id, when_get_movies
 
 
 class TestGetMovies(CustomTestCase):
@@ -50,7 +55,8 @@ class TestGetMovies(CustomTestCase):
         min_rating = 5
         movies_set = given_a_set_of_movies()
         expected_movies = [
-            movie for movie in movies_set if float(movie.vote_average) > min_rating
+            movie for movie in movies_set
+            if float(movie.vote_average) > min_rating
         ]
 
         # When
@@ -66,7 +72,9 @@ class TestGetMovies(CustomTestCase):
         filter_tags = ['genre 1', 'genre 2']
         movies_set = given_a_set_of_movies()
         expected_movies = [
-            movie for movie in movies_set if float(movie.vote_average) > min_rating and str(movie.genre) in filter_tags
+            movie for movie in movies_set
+            if float(movie.vote_average) > min_rating
+            and str(movie.genre) in filter_tags
         ]
 
         # When
