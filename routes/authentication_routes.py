@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, url_for
 from werkzeug import Response
 from adapters.authentication_service_impl import AuthenticationServiceImpl
-from adapters.db_connection import DB_CONNECT
+from adapters.db_connection import get_thread_db
 from adapters.user_repository_impl import UserRepositoryImpl
 from domain.services.user_service import UserService
 from routes.middlewares.authentication_middlewares import check_authentication
@@ -25,7 +25,7 @@ def register() -> Response | tuple[str, int]:
             username = request.form['username']
             password = request.form['password']
 
-            user_repository = UserRepositoryImpl(DB_CONNECT)
+            user_repository = UserRepositoryImpl(get_thread_db())
             user_service = UserService(user_repository)
             user_service.register(username, password)
 
@@ -49,7 +49,7 @@ def login() -> Response | tuple[str, int]:
             username = request.form['username']
             password = request.form['password']
 
-            user_repository = UserRepositoryImpl(DB_CONNECT)
+            user_repository = UserRepositoryImpl(get_thread_db())
             user_service = UserService(user_repository)
             authentication_service = AuthenticationServiceImpl(user_service)
             authentication_service.login(username, password)
@@ -64,7 +64,7 @@ def login() -> Response | tuple[str, int]:
 @check_authentication
 def logout() -> Response | tuple[str, int]:
     try:
-        user_repository = UserRepositoryImpl(DB_CONNECT)
+        user_repository = UserRepositoryImpl(get_thread_db())
         user_service = UserService(user_repository)
         authentication_service = AuthenticationServiceImpl(user_service)
         authentication_service.logout()

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from adapters.db_connection import DB_CONNECT
+from adapters.db_connection import get_thread_db
 from domain.entities.movie import AVAILABLE_GENRE
 from adapters.movie_repository_impl import MovieRepositoryImpl
 from domain.services.movie_service import MovieService
@@ -23,7 +23,7 @@ def home_movies() -> str:
     else:
         min_rating = int(min_rating_str)
 
-    movies_repo = MovieRepositoryImpl(DB_CONNECT)
+    movies_repo = MovieRepositoryImpl(get_thread_db())
     query_result = MovieService(movies_repo).get_movies(
         page, selected_tags, min_rating)
     movies, total_pages = query_result["movies"], query_result["total_pages"]
@@ -41,7 +41,7 @@ def home_movies() -> str:
 
 @movie_bp.route('/<int:movie_id>')
 def movie_detail(movie_id: int) -> str:
-    movies_repo = MovieRepositoryImpl(DB_CONNECT)
+    movies_repo = MovieRepositoryImpl(get_thread_db())
     movie = MovieService(movies_repo).get_movie_by_id(movie_id)
     return render_template(
         'movie_detail.html',

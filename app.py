@@ -3,6 +3,7 @@ from flask_session import Session  # type: ignore
 from models.movie_model import db
 from flask_migrate import Migrate
 from routes.movie_routes import movie_bp
+from routes.authentication_routes import authentication_bp
 
 app = Flask(__name__)
 
@@ -17,6 +18,7 @@ migrate = Migrate(app, db)
 
 # Routes
 app.register_blueprint(movie_bp)
+app.register_blueprint(authentication_bp, url_prefix='/auth')
 
 __all__ = ["app", "db"]
 

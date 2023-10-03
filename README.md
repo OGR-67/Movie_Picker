@@ -114,9 +114,9 @@ To revert last migration run `flask db downgrade`
 
 Users:
 
-- [ ] create user / register
-- [ ] login
-- [ ] logout
+- [X] create user / register
+- [X] login
+- [X] logout
 
 favorites:
 
@@ -140,6 +140,7 @@ Movies:
 - [ ] image lazy loading
 - [X] pagination
 - [ ] style
+- [ ] 404 page
 
 ## Trouble Shooting
 
