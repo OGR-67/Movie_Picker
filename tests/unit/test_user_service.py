@@ -5,7 +5,9 @@ from tests.unit.test_utils.users.helpers import \
     then_error_message_is_password_too_short, \
     then_error_message_is_username_already_exists, \
     then_error_message_is_username_cannot_contain_spaces, \
+    then_error_message_is_username_or_password_incorrect, \
     then_error_message_is_username_too_short, \
+    then_user_is_logged_in, \
     then_user_is_registered, \
     when_register
 
@@ -75,3 +77,52 @@ class TestRegister(CustomTestCase):
 
         # Then
         then_error_message_is_password_too_short(self, context.exception)
+
+
+class TestLogin(CustomTestCase):
+    def setUp(self) -> None:
+        self.user_repository = given_a_user_repository()
+        self.user_service = given_a_user_service(self)
+
+    def test_login_with_unregistered_user(self: CustomTestCase) -> None:
+        # Given
+        username = 'user1'
+        password = 'password 1'
+
+        # When
+        with self.assertRaises(Exception) as context:
+            self.user_service.login(username, password)
+
+        # Then
+        then_error_message_is_username_or_password_incorrect(
+            self, context.exception)
+
+    def test_login_with_registered_user_wrong_credentials(
+        self: CustomTestCase
+    ) -> None:
+        # Given
+        username = 'user1'
+        password = 'password 1'
+        when_register(self.user_service, username, password)
+
+        # When
+        with self.assertRaises(Exception) as context:
+            self.user_service.login(username, 'wrong password')
+
+        # Then
+        then_error_message_is_username_or_password_incorrect(
+            self, context.exception)
+
+    def test_login_with_registered_user_correct_credentials(
+        self: CustomTestCase
+    ) -> None:
+        # Given
+        username = 'user1'
+        password = 'password 1'
+        when_register(self.user_service, username, password)
+
+        # When
+        user = self.user_service.login(username, password)
+
+        # Then
+        then_user_is_logged_in(self, user, username, password)

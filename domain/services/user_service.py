@@ -12,6 +12,10 @@ class UserServiceInterface(ABC):
     def register(self, username: str, password: str) -> User:
         pass
 
+    @abstractmethod
+    def login(self, username: str, password: str) -> User:
+        pass
+
 
 class UserService(UserServiceInterface):
     def __init__(self, user_repository: UserRepository):
@@ -33,3 +37,14 @@ class UserService(UserServiceInterface):
 
         hashed_password = str(hash(password))
         return self.user_repository.add_user(username, hashed_password)
+
+    def login(self, username: str, password: str) -> User:
+        hashed_password = str(hash(password))
+
+        user = self.user_repository.check_credentials(
+            username,
+            hashed_password
+        )
+        if user is None:
+            raise Exception('username or password is incorrect')
+        return user

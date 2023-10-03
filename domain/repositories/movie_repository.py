@@ -4,9 +4,6 @@ from typing import Any
 
 
 class MovieRepository(ABC):
-    @abstractmethod
-    def add_movie(self, movie: Movie) -> Movie:
-        pass
 
     @abstractmethod
     def get_movie(self, movie_id: int) -> Movie | None:

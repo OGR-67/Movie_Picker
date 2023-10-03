@@ -9,31 +9,6 @@ class MovieRepositoryImpl(MovieRepository):
         self.connect = connection
         self.ITEMS_PER_PAGE = 20
 
-    def add_movie(self, movie: Movie) -> Movie:
-        # Not implemented yet
-        self.connect.execute(
-            """INSERT INTO movies (
-                title,
-                original_language,
-                summary,
-                release_date,
-                poster_url,
-                genre,
-                vote_average
-                )
-            VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (
-                movie.title,
-                movie.original_language,
-                movie.summary,
-                movie.release_date,
-                movie.poster_url,
-                ", ".join(movie.genre),
-                movie.vote_average
-            ))
-        # self.connect.commit()
-        return movie
-
     def get_movie(self, movie_id: int) -> Movie | None:
         cursor = self.connect.execute(
             "SELECT * FROM movies WHERE id=?", (movie_id,))

@@ -59,3 +59,21 @@ def then_error_message_is_username_cannot_contain_spaces(
     exception: Exception
 ) -> None:
     test_case.assertEqual(str(exception), 'Username cannot contain spaces')
+
+
+def then_error_message_is_username_or_password_incorrect(
+    test_case: CustomTestCase,
+    exception: Exception
+) -> None:
+    test_case.assertEqual(str(exception), 'username or password is incorrect')
+
+
+def then_user_is_logged_in(
+    test_case: CustomTestCase,
+    user: User,
+    username: str,
+    password: str
+) -> None:
+    test_case.assertIsNotNone(user.id)
+    test_case.assertEqual(user.username, username)
+    test_case.assertEqual(user.password, str(hash(password)))

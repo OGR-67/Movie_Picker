@@ -38,6 +38,3 @@ class MovieRepositoryFixture(MovieRepository):
             if movie.id == movie_id:
                 return movie
         return None
-
-    def add_movie(self, movie: Movie) -> Movie:
-        return movie

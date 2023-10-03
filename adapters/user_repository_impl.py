@@ -26,3 +26,13 @@ class UserRepositoryImpl(UserRepository):
         except Exception as e:
             self.connect.rollback()
             raise e
+
+    def check_credentials(self, username: str, password: str) -> User | None:
+        cursor = self.connect.execute(
+            "SELECT * FROM users WHERE username = ? AND password = ?",
+            (username, password)
+        )
+        row = cursor.fetchone()
+        if row is None:
+            return None
+        return User(*row)

@@ -38,3 +38,23 @@ def then_user_is_registered(
     test_case.assertGreaterEqual(user.id, 1)
     test_case.assertEqual(user.username, username)
     test_case.assertEqual(user.password, password)
+
+
+def then_user_is_loggedIn(
+    test_case: CustomTestCase,
+    user: User | None,
+    username: str,
+    password: str
+) -> None:
+    test_case.assertIsNotNone(user)
+    test_case.assertIsInstance(user, User)
+    assert isinstance(user, User)  # for mypy
+    test_case.assertEqual(user.username, username)
+    test_case.assertEqual(user.password, password)
+
+
+def then_user_is_not_loggedIn(
+    test_case: CustomTestCase,
+    user: User | None,
+) -> None:
+    test_case.assertIsNone(user)

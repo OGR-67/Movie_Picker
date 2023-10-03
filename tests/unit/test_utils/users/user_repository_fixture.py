@@ -14,3 +14,9 @@ class UserRepositoryFixture(UserRepository):
         user = User(id, username, password)
         self.users.append(user)
         return user
+
+    def check_credentials(self, username: str, password: str) -> User | None:
+        for user in self.users:
+            if user.username == username and user.password == password:
+                return user
+        return None
