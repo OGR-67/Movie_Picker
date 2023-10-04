@@ -32,15 +32,22 @@
     <input type="number" name="min_rating" min="0" max="10" value="{{ min_rating }}">
     <input type="submit" value="Filtrer">
   </form>
-
   <div class="movie-grid">
     {% for movie in movies %}
-    <div class="movie-card" id="{{movie.id}}">
-      <img src="{{movie.poster_url}}" alt="{{movie.title}} poster">
+    <div class="movie-card">
+      <img id="{{movie.id}}" src="{{movie.poster_url}}" alt="{{movie.title}} poster">
       <h2>{{ movie.title }}</h2>
       <p>{{ movie.release_date }}</p>
       <p>{{ movie.vote_average}}</p>
       <p>{{ movie.id }}</p>
+      {% if username %}
+      {% if movie.id in favorite_movie_ids %}
+      <p>❤️</p>
+      <button class="remove-favorite" data-movie-id="{{ movie.id }}">Delete from favorites</button>
+      {% else %}
+      <button class="add-favorite" data-movie-id="{{ movie.id }}">Add to favorites</button>
+      {% endif %}
+      {% endif %}
 
 
       <div class="genre-tags">
@@ -66,11 +73,37 @@
   </footer>
 
   <script>
-    const cards = document.querySelectorAll('.movie-card');
+    const cards = document.querySelectorAll('.movie-card + img');
     cards.forEach(card => {
       card.addEventListener('click', () => {
         const movieId = +card.id;
         window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
+      });
+    });
+
+    document.querySelectorAll(".remove-favorite").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const movieId = +this.getAttribute("data-movie-id");
+
+        fetch(`{{ url_for('favorites.remove_movie', movie_id=0) }}`.replace('0', movieId))
+          .then(function (response) {
+            if (response.status === 200) {
+              window.location.reload();
+            }
+          });
+      });
+    });
+
+    document.querySelectorAll(".add-favorite").forEach(function (button) {
+      button.addEventListener("click", function () {
+        const movieId = +this.getAttribute("data-movie-id");
+        fetch(`{{ url_for('favorites.add_movie', movie_id=0) }}`.replace('0', movieId))
+          .then(function (response) {
+            if (response.status === 200) {
+              console.log(response.body);
+              window.location.reload();
+            }
+          });
       });
     });
   </script>

@@ -14,6 +14,20 @@
   <p>{{movie.release_date}}</p>
   <p>{{", ".join(movie.genre)}}</p>
   <p>{{movie.vote_average}}</p>
+  {% if username %}
+  {% if movie.id in favorite_movie_ids %}
+  <p>❤️</p>
+  <form action="{{ url_for('favorites.remove_movie') }}" method="GET">
+    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+    <input type="submit" value="Remove from favorites">
+  </form>
+  {% else %}
+  <form action="{{ url_for('favorites.add_movie') }}" method="GET">
+    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+    <input type="submit" value="Add to favorites">
+  </form>
+  {% endif %}
+  {% endif %}
 
   <button onclick="goBack()">Précédent</button>
 

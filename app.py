@@ -4,6 +4,7 @@ from models.movie_model import db
 from flask_migrate import Migrate
 from routes.movie_routes import movie_bp
 from routes.authentication_routes import authentication_bp
+from routes.favorite_routes import favorite_bp
 
 app = Flask(__name__)
 
@@ -19,6 +20,7 @@ migrate = Migrate(app, db)
 # Routes
 app.register_blueprint(movie_bp)
 app.register_blueprint(authentication_bp, url_prefix='/auth')
+app.register_blueprint(favorite_bp, url_prefix='/favorites')
 
 __all__ = ["app", "db"]
 
