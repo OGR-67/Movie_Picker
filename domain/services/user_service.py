@@ -1,6 +1,6 @@
+import hashlib
 from abc import ABC, abstractmethod
 from domain.entities.user import User
-
 from domain.repositories.user_repository import UserRepository
 
 
@@ -14,6 +14,10 @@ class UserServiceInterface(ABC):
 
     @abstractmethod
     def login(self, username: str, password: str) -> User:
+        pass
+
+    @abstractmethod
+    def hash_password(self, password: str) -> str:
         pass
 
 
@@ -35,11 +39,11 @@ class UserService(UserServiceInterface):
             if user.username == username:
                 raise Exception('Username already exists')
 
-        hashed_password = str(hash(password))
+        hashed_password = self.hash_password(password)
         return self.user_repository.add_user(username, hashed_password)
 
     def login(self, username: str, password: str) -> User:
-        hashed_password = str(hash(password))
+        hashed_password = self.hash_password(password)
 
         user = self.user_repository.check_credentials(
             username,
@@ -48,3 +52,6 @@ class UserService(UserServiceInterface):
         if user is None:
             raise Exception('username or password is incorrect')
         return user
+
+    def hash_password(self, password: str) -> str:
+        return hashlib.sha256(password.encode()).hexdigest()

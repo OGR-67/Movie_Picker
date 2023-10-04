@@ -30,7 +30,8 @@ def then_user_is_registered(
 ) -> None:
     test_case.assertIsNotNone(user.id)
     test_case.assertEqual(user.username, username)
-    test_case.assertEqual(user.password, str(hash(password)))
+    test_case.assertEqual(
+        user.password, test_case.user_service.hash_password(password))
 
 
 def then_error_message_is_username_already_exists(
@@ -76,4 +77,5 @@ def then_user_is_logged_in(
 ) -> None:
     test_case.assertIsNotNone(user.id)
     test_case.assertEqual(user.username, username)
-    test_case.assertEqual(user.password, str(hash(password)))
+    test_case.assertEqual(
+        user.password, test_case.user_service.hash_password(password))

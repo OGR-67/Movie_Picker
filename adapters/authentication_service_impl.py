@@ -9,7 +9,6 @@ class AuthenticationServiceImpl (AuthenticationService):
         self.user_service = user_service
 
     def login(self, username: str, password: str) -> User:
-
         user = self.user_service.login(username, password)
         session["movie_picker_user"] = user.username
         return user

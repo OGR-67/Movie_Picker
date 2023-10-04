@@ -1,14 +1,27 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session
+from adapters.authentication_service_impl import AuthenticationServiceImpl
 from adapters.db_connection import get_thread_db
+from adapters.user_repository_impl import UserRepositoryImpl
 from domain.entities.movie import AVAILABLE_GENRE
 from adapters.movie_repository_impl import MovieRepositoryImpl
 from domain.services.movie_service import MovieService
+from domain.services.user_service import UserService
 
 movie_bp = Blueprint('movies', __name__)
 
 
 @movie_bp.route('/')
 def home_movies() -> str:
+    user_repository = UserRepositoryImpl(get_thread_db())
+    user_service = UserService(user_repository)
+    authentication_service = AuthenticationServiceImpl(
+        user_service
+    )
+    if authentication_service.is_logged_in():
+        username = session["movie_picker_user"]
+    else:
+        username = None
+
     page_str = request.args.get("page")
     if page_str is None or not page_str.isdigit():
         page = 1
@@ -35,7 +48,8 @@ def home_movies() -> str:
         total_pages=total_pages,
         selected_tags=selected_tags,
         available_tags=AVAILABLE_GENRE,
-        min_rating=min_rating
+        min_rating=min_rating,
+        username=username
     )
 
 

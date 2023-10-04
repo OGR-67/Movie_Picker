@@ -7,8 +7,19 @@
 </head>
 
 <body>
+  <nav>
+    <a href="{{ url_for('movies.home_movies') }}">Accueil</a>
+    {% if not username %}
+    <a href="{{ url_for('auth.login') }}">Se connecter</a>
+    <a href="{{ url_for('auth.register') }}">S'inscrire</a>
+    {% else %}
+    <a href="{{ url_for('auth.logout') }}">Se déconnecter</a>
+    {% endif %}
+  </nav>
+  {% if username %}
+  <h2>Welcome {{ username }}</h2>
+  {% endif %}
   <h1>Liste des films</h1>
-
   <form action="{{ url_for('movies.home_movies') }}" method="GET">
     <label>Sélectionnez des tags :</label><br>
     {% for tag in available_tags %}

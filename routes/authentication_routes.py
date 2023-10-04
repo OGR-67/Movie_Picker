@@ -52,12 +52,13 @@ def login() -> Response | tuple[str, int]:
             user_repository = UserRepositoryImpl(get_thread_db())
             user_service = UserService(user_repository)
             authentication_service = AuthenticationServiceImpl(user_service)
+
             authentication_service.login(username, password)
 
             return redirect(url_for('movies.home_movies'))
         return str(form.errors), 401
-    except Exception:
-        return str(Exception), 401
+    except Exception as e:
+        return str(e), 401
 
 
 @authentication_bp.route('/logout')

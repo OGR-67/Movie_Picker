@@ -8,7 +8,48 @@
 </head>
 
 <body>
-  Register
+  <h1>Register</h1>
+  <form method="POST" action="{{ url_for('auth.register') }}">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password2">Confirm Password</label>
+      <input type="password" class="form-control" id="password2" name="password2" required>
+    </div>
+    <div id="error-field" class="text-danger"></div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+
+  <script>
+    const passwordField = document.getElementById('password');
+    const password2Field = document.getElementById('password2');
+
+    const errorField = document.getElementById('error-field');
+
+    function checkPasswords() {
+      const password = passwordField.value;
+      const password2 = password2Field.value;
+
+      if (password === password2 || password2 === '') {
+        errorField.textContent = '';
+      } else {
+        errorField.textContent = 'Les mots de passe ne correspondent pas';
+      }
+    }
+
+    passwordField.addEventListener('input', checkPasswords);
+    password2Field.addEventListener('input', checkPasswords);
+  </script>
 </body>
 
 </html>
