@@ -23,7 +23,8 @@ def then_movie_is_not_found(movie: Movie | None) -> None:
     assert movie is None
 
 
-def given_a_movie_in_db(db_connect: sqlite3.Connection) -> None:
+def given_a_movie_in_db(db_connect: sqlite3.Connection) -> Movie:
+    # We crate the movie in the db
     cursor = db_connect.cursor()
     cursor.execute(
         """
@@ -48,6 +49,17 @@ def given_a_movie_in_db(db_connect: sqlite3.Connection) -> None:
         """
     )
     db_connect.commit()
+    # then we return the last added movie
+    last_row_id = cursor.lastrowid
+    cursor.execute(
+        """
+        SELECT * FROM movies
+        WHERE id = ?
+        """,
+        (last_row_id,)
+    )
+    row = cursor.fetchone()
+    return Movie(*row)
 
 
 def then_movie_is_found(

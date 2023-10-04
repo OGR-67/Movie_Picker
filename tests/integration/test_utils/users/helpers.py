@@ -2,11 +2,18 @@ from sqlite3 import Connection
 from adapters.user_repository_impl import UserRepositoryImpl
 from domain.entities.user import User
 from domain.repositories.user_repository import UserRepository
+from domain.services.user_service import UserService
 from tests.custom_test_case import CustomTestCase
 
 
 def given_a_user_repository(db_conn: Connection) -> UserRepository:
     return UserRepositoryImpl(db_conn)
+
+
+def given_a_user_in_db(test_case: CustomTestCase) -> User:
+    user_service = UserService(test_case.user_repository)
+    user = user_service.register("unused_username", "password")
+    return user
 
 
 def when_get_users(test_case: CustomTestCase) -> list[User]:
