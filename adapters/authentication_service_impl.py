@@ -10,11 +10,15 @@ class AuthenticationServiceImpl (AuthenticationService):
 
     def login(self, username: str, password: str) -> User:
         user = self.user_service.login(username, password)
-        session["movie_picker_user"] = user.username
+        session["movie_picker_user"] = {
+            "id": user.id,
+            "username": user.username
+        }
         return user
 
     def logout(self) -> None:
         session.pop("movie_picker_user", None)
 
     def is_logged_in(self) -> bool:
-        return "movie_picker_user" in session
+        return "movie_picker_user" in session \
+            and isinstance(session["movie_picker_user"], dict)

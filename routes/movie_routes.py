@@ -18,8 +18,10 @@ def home_movies() -> str:
         user_service
     )
     if authentication_service.is_logged_in():
-        username = session["movie_picker_user"]
+        username = session["movie_picker_user"]["username"]
+        user_id = session["movie_picker_user"]["id"]
     else:
+        user_id = None
         username = None
 
     page_str = request.args.get("page")
@@ -49,6 +51,7 @@ def home_movies() -> str:
         selected_tags=selected_tags,
         available_tags=AVAILABLE_GENRE,
         min_rating=min_rating,
+        user_id=user_id,
         username=username
     )
 
