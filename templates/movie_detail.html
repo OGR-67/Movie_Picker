@@ -4,6 +4,11 @@
 <head>
   <title>Détail</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home.css') }}">
+  <script>
+    const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
+    const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
+  </script>
+  <script src="{{ url_for('static', filename='scripts/favorites.js') }}" defer></script>
 </head>
 
 <body>
@@ -17,15 +22,9 @@
   {% if username %}
   {% if movie.id in favorite_movie_ids %}
   <p>❤️</p>
-  <form action="{{ url_for('favorites.remove_movie') }}" method="GET">
-    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-    <input type="submit" value="Remove from favorites">
-  </form>
+  <button class="remove-favorite" data-movie-id="{{ movie.id }}">Delete from favorites</button>
   {% else %}
-  <form action="{{ url_for('favorites.add_movie') }}" method="GET">
-    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-    <input type="submit" value="Add to favorites">
-  </form>
+  <button class="add-favorite" data-movie-id="{{ movie.id }}">Add to favorites</button>
   {% endif %}
   {% endif %}
 

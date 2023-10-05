@@ -4,6 +4,20 @@
 <head>
   <title>Liste des films</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home.css') }}">
+  <script>
+    const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
+    const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.show-details').forEach(button => {
+        button.addEventListener('click', () => {
+          const movieId = +button.getAttribute("data-movie-id");
+          console.log(movieId);
+          window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
+        });
+      });
+    });
+  </script>
+  <script src="{{ url_for('static', filename='scripts/favorites.js') }}"></script>
 </head>
 
 <body>
@@ -35,7 +49,7 @@
   <div class="movie-grid">
     {% for movie in movies %}
     <div class="movie-card">
-      <img id="{{movie.id}}" src="{{movie.poster_url}}" alt="{{movie.title}} poster">
+      <img src="{{movie.poster_url}}" alt="{{movie.title}} poster">
       <h2>{{ movie.title }}</h2>
       <p>{{ movie.release_date }}</p>
       <p>{{ movie.vote_average}}</p>
@@ -48,7 +62,7 @@
       <button class="add-favorite" data-movie-id="{{ movie.id }}">Add to favorites</button>
       {% endif %}
       {% endif %}
-
+      <button class="show-details" data-movie-id="{{ movie.id }}">Details</button>
 
       <div class="genre-tags">
         {% for genre in movie.genre %}
@@ -71,42 +85,6 @@
       <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
       {% endif %}
   </footer>
-
-  <script>
-    const cards = document.querySelectorAll('.movie-card + img');
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const movieId = +card.id;
-        window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
-      });
-    });
-
-    document.querySelectorAll(".remove-favorite").forEach(function (button) {
-      button.addEventListener("click", function () {
-        const movieId = +this.getAttribute("data-movie-id");
-
-        fetch(`{{ url_for('favorites.remove_movie', movie_id=0) }}`.replace('0', movieId))
-          .then(function (response) {
-            if (response.status === 200) {
-              window.location.reload();
-            }
-          });
-      });
-    });
-
-    document.querySelectorAll(".add-favorite").forEach(function (button) {
-      button.addEventListener("click", function () {
-        const movieId = +this.getAttribute("data-movie-id");
-        fetch(`{{ url_for('favorites.add_movie', movie_id=0) }}`.replace('0', movieId))
-          .then(function (response) {
-            if (response.status === 200) {
-              console.log(response.body);
-              window.location.reload();
-            }
-          });
-      });
-    });
-  </script>
 </body>
 
 </html>
