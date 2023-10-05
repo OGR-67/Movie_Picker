@@ -122,8 +122,8 @@ Users:
 
 favorites:
 
-- [ ] add movie - depends on: Users, Movies
-- [ ] remove movie - depends on: Users, Movies
+- [X] add movie - depends on: Users, Movies
+- [X] remove movie - depends on: Users, Movies
 
 Watchlist:
 

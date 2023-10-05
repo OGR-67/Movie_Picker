@@ -1,0 +1,8 @@
+{% if username %}
+{% if movie.id in watchlist_movie_ids %}
+<p>👀</p>
+<button class="remove-watchlist" data-movie-id="{{ movie.id }}">Delete from watchlists</button>
+{% else %}
+<button class="add-watchlist" data-movie-id="{{ movie.id }}">Add to watchlists</button>
+{% endif %}
+{% endif %}

@@ -1,36 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
-</head>
-
-<body>
-  <h1>Register</h1>
-  <form method="POST" action="{{ url_for('auth.register') }}">
-    {{ form.hidden_tag() }}
-
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" name="username" required>
-    </div>
-
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" required>
-    </div>
-
-    <div class="form-group">
-      <label for="password2">Confirm Password</label>
-      <input type="password" class="form-control" id="password2" name="password2" required>
-    </div>
-    <div id="error-field" class="text-danger"></div>
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
-
-  <script>
+{% block title %}Register{% endblock %}
+{% block head %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
     const passwordField = document.getElementById('password');
     const password2Field = document.getElementById('password2');
 
@@ -49,7 +22,35 @@
 
     passwordField.addEventListener('input', checkPasswords);
     password2Field.addEventListener('input', checkPasswords);
-  </script>
-</body>
+  });
+</script>
+{% endblock %}
 
-</html>
+{% block content %}
+
+<h1>Register</h1>
+
+{% set fields = [{
+'field_name': 'username',
+'label': 'Username',
+'input_type': 'text',
+'is_required': true
+},
+{
+'field_name': 'password',
+'label': 'Password',
+'input_type': 'password',
+'is_required': true
+},
+{
+'field_name': 'password2',
+'label': 'Confirm password',
+'input_type': 'password2',
+'is_required': true
+}] %}
+{% set submit_button_text = "Register" %}
+{% set method = "POST" %}
+{% set action = url_for('auth.register') %}
+{% include "components/form.html" %}
+
+{% endblock %}

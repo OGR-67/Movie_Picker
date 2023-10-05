@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home.css') }}">
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+  <nav>
+    <a href="{{ url_for('movies.home_movies') }}">Home</a>
+    {% if not username %}
+    <a href="{{ url_for('auth.login') }}">Login</a>
+    <a href="{{ url_for('auth.register') }}">Register</a>
+    {% else %}
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+    {% endif %}
+  </nav>
+  {% if username %}
+  <h2>Welcome {{ username }}</h2>
+  {% endif %}
+
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>

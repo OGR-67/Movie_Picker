@@ -1,42 +1,27 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
 
-<head>
-  <title>Détail</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home.css') }}">
-  <script>
-    const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
-    const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
-  </script>
-  <script src="{{ url_for('static', filename='scripts/favorites.js') }}" defer></script>
-</head>
-
-<body>
-  <img src="{{movie.poster_url}}" alt="{{movie.title}} poster" style="height: 150px;">
-  <h1>{{movie.title}}</h1>
-  <p>{{movie.original_language}}</p>
-  <p>{{movie.summary}}</p>
-  <p>{{movie.release_date}}</p>
-  <p>{{", ".join(movie.genre)}}</p>
-  <p>{{movie.vote_average}}</p>
-  {% if username %}
-  {% if movie.id in favorite_movie_ids %}
-  <p>❤️</p>
-  <button class="remove-favorite" data-movie-id="{{ movie.id }}">Delete from favorites</button>
-  {% else %}
-  <button class="add-favorite" data-movie-id="{{ movie.id }}">Add to favorites</button>
-  {% endif %}
-  {% endif %}
-
-  <button onclick="goBack()">Précédent</button>
-
-  <script>
-    function goBack() {
-      window.history.back();
-    }
-  </script>
+{% block title %}Movie Details{% endblock %}
+{% block head %}
+<script>
+  const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
+  const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
+  function goBack() {
+    window.history.back();
+  }
+</script>
+<script src="{{ url_for('static', filename='scripts/favorites.js') }}" defer></script>
+{% endblock %}
+{% block content %}
+<img src="{{movie.poster_url}}" alt="{{movie.title}} poster" style="height: 150px;">
+<h1>{{movie.title}}</h1>
+<p>{{movie.original_language}}</p>
+<p>{{movie.summary}}</p>
+<p>{{movie.release_date}}</p>
+<p>{{", ".join(movie.genre)}}</p>
+<p>{{movie.vote_average}}</p>
+{% include 'components/favorites_component.html' %}
 
 
-</body>
+<button onclick="goBack()">Previous</button>
 
-</html>
+{% endblock %}

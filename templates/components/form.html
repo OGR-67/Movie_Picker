@@ -1,0 +1,12 @@
+<form method="{{ method }}" action="{{ action }}">
+  {{ form.hidden_tag() }}
+  {% for field in fields %}
+  <div class="form-group">
+    <label for="{{ field.field_name }}">{{ field.label }}</label>
+    <input type="{{ field.input_type }}" class="form-control" id="{{ field.field_name }}" name="{{ field.field_name }}"
+      {% if field.is_required %}required{% endif %}>
+  </div>
+  {% endfor %}
+  <div id="error-field" class="text-danger"></div>
+  <button type="submit" class="btn btn-primary">{{ submit_button_text }}</button>
+</form>

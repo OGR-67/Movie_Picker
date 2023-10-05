@@ -1,90 +1,68 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
 
-<head>
-  <title>Liste des films</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home.css') }}">
-  <script>
-    const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
-    const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
-    document.addEventListener("DOMContentLoaded", function () {
-      document.querySelectorAll('.show-details').forEach(button => {
-        button.addEventListener('click', () => {
-          const movieId = +button.getAttribute("data-movie-id");
-          console.log(movieId);
-          window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
-        });
+{% block title %}Movies list{% endblock %}
+{% block head %}
+<script>
+  const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
+  const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.show-details').forEach(button => {
+      button.addEventListener('click', () => {
+        const movieId = +button.getAttribute("data-movie-id");
+        console.log(movieId);
+        window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
       });
     });
-  </script>
-  <script src="{{ url_for('static', filename='scripts/favorites.js') }}"></script>
-</head>
+  });
+</script>
+<script src="{{ url_for('static', filename='scripts/favorites.js') }}"></script>
+{% endblock %}
 
-<body>
-  <nav>
-    <a href="{{ url_for('movies.home_movies') }}">Accueil</a>
-    {% if not username %}
-    <a href="{{ url_for('auth.login') }}">Se connecter</a>
-    <a href="{{ url_for('auth.register') }}">S'inscrire</a>
-    {% else %}
-    <a href="{{ url_for('auth.logout') }}">Se déconnecter</a>
-    {% endif %}
-  </nav>
-  {% if username %}
-  <h2>Welcome {{ username }}</h2>
-  {% endif %}
-  <h1>Liste des films</h1>
-  <form action="{{ url_for('movies.home_movies') }}" method="GET">
-    <label>Sélectionnez des tags :</label><br>
-    {% for tag in available_tags %}
-    <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
-      checked {% endif %}{% endif %}>
-    {{ tag}}<br>
-    {% endfor %}
-    <br>
-    <label>Note minimale :</label>
-    <input type="number" name="min_rating" min="0" max="10" value="{{ min_rating }}">
-    <input type="submit" value="Filtrer">
-  </form>
-  <div class="movie-grid">
-    {% for movie in movies %}
-    <div class="movie-card">
-      <img src="{{movie.poster_url}}" alt="{{movie.title}} poster">
-      <h2>{{ movie.title }}</h2>
-      <p>{{ movie.release_date }}</p>
-      <p>{{ movie.vote_average}}</p>
-      <p>{{ movie.id }}</p>
-      {% if username %}
-      {% if movie.id in favorite_movie_ids %}
-      <p>❤️</p>
-      <button class="remove-favorite" data-movie-id="{{ movie.id }}">Delete from favorites</button>
-      {% else %}
-      <button class="add-favorite" data-movie-id="{{ movie.id }}">Add to favorites</button>
-      {% endif %}
-      {% endif %}
-      <button class="show-details" data-movie-id="{{ movie.id }}">Details</button>
+{% block content %}
+<h1>Liste des films</h1>
+<form action="{{ url_for('movies.home_movies') }}" method="GET">
+  <label>Sélectionnez des tags :</label><br>
+  {% for tag in available_tags %}
+  <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
+    checked {% endif %}{% endif %}>
+  {{ tag}}<br>
+  {% endfor %}
+  <br>
+  <label>Note minimale :</label>
+  <input type="number" name="min_rating" min="0" max="10" value="{{ min_rating }}">
+  <input type="submit" value="Filtrer">
+</form>
+<div class="movie-grid">
+  {% for movie in movies %}
+  <div class="movie-card">
+    <img src="{{movie.poster_url}}" alt="{{movie.title}} poster">
+    <h2>{{ movie.title }}</h2>
+    <p>{{ movie.release_date }}</p>
+    <p>{{ movie.vote_average}}</p>
+    <p>{{ movie.id }}</p>
+    {% include 'components/favorites_component.html' %}
 
-      <div class="genre-tags">
-        {% for genre in movie.genre %}
-        <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
-        {% endfor %}
-      </div>
+    <button class="show-details" data-movie-id="{{ movie.id }}">Details</button>
+
+    <div class="genre-tags">
+      {% for genre in movie.genre %}
+      <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
-  <footer>
-    <p>Page {{ page }} / {{ total_pages }}</p>
-    {% if page > 1 %}
-    <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags, min_rating=min_rating) }}">Début</a>
-    <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags, min_rating=min_rating) }}">Précédent</a>
+  {% endfor %}
+</div>
+<div>
+  <p>Page {{ page }} / {{ total_pages }}</p>
+  {% if page > 1 %}
+  <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags, min_rating=min_rating) }}">Début</a>
+  <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags, min_rating=min_rating) }}">Précédent</a>
+  {% endif %}
+  {% if page < total_pages %} <a
+    href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags, min_rating=min_rating) }}">
+    Suivant
+    </a>
+    <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
     {% endif %}
-    {% if page < total_pages %} <a
-      href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags, min_rating=min_rating) }}">
-      Suivant
-      </a>
-      <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
-      {% endif %}
-  </footer>
-</body>
-
-</html>
+</div>
+{% endblock %}
