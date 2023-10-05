@@ -16,3 +16,6 @@ instance/
 .dmypy.json
 .mypy_cache/
 pytest_cache/
+
+# Session
+flask_session/
