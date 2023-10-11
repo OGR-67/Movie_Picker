@@ -1,5 +1,7 @@
 from flask import session
-from adapters.authentication_service_impl import AuthenticationServiceImpl
+from adapters.authentication_service_impl import \
+    AuthUser, \
+    AuthenticationServiceImpl
 from adapters.db_connection import get_thread_db
 from adapters.favorite_repository_impl import FavoriteRepositoryImpl
 from adapters.user_repository_impl import UserRepositoryImpl
@@ -40,3 +42,9 @@ def get_user_infos(
         favorite_movies = []
         watchlist_movies = []
     return username, user_id, favorite_movies, watchlist_movies
+
+
+def get_user_id(
+) -> int:
+    user: AuthUser = session["movie_picker_user"]
+    return user["id"]

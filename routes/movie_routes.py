@@ -3,6 +3,8 @@ from adapters.db_connection import get_thread_db
 from domain.entities.movie import AVAILABLE_GENRE
 from adapters.movie_repository_impl import MovieRepositoryImpl
 from domain.services.movie_service import MovieService
+from routes.helpers.min_rating import get_min_rating
+from routes.helpers.page import get_page_number
 from routes.helpers.user import get_user_infos
 
 movie_bp = Blueprint('movies', __name__)
@@ -12,19 +14,11 @@ movie_bp = Blueprint('movies', __name__)
 def home_movies() -> str:
     username, user_id, favorite_movies, watchlist_movies = get_user_infos()
 
-    page_str = request.args.get("page")
-    if page_str is None or not page_str.isdigit():
-        page = 1
-    else:
-        page = int(page_str)
+    page = get_page_number()
 
     selected_tags = request.args.getlist('tags') or None
 
-    min_rating_str = request.args.get("min_rating")
-    if min_rating_str is None or not min_rating_str.isdigit():
-        min_rating = 0
-    else:
-        min_rating = int(min_rating_str)
+    min_rating: int = get_min_rating()
 
     movies_repo = MovieRepositoryImpl(get_thread_db())
     query_result = MovieService(movies_repo).get_movies(
