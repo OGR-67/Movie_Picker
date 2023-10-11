@@ -10,7 +10,7 @@ movie_bp = Blueprint('movies', __name__)
 
 @movie_bp.route('/')
 def home_movies() -> str:
-    username, user_id, favorite_movies = get_user_infos()
+    username, user_id, favorite_movies, watchlist_movies = get_user_infos()
 
     page_str = request.args.get("page")
     if page_str is None or not page_str.isdigit():
@@ -41,13 +41,16 @@ def home_movies() -> str:
         min_rating=min_rating,
         user_id=user_id,
         username=username,
-        favorite_movie_ids=[favorite.movie_id for favorite in favorite_movies]
+        favorite_movie_ids=[favorite.movie_id for favorite in favorite_movies],
+        watchlist_movie_ids=[
+            watchlist.movie_id for watchlist in watchlist_movies]
+
     )
 
 
 @movie_bp.route('/<int:movie_id>')
 def movie_detail(movie_id: int) -> str:
-    username, user_id, favorite_movies = get_user_infos()
+    username, user_id, favorite_movies, watchlist_movies = get_user_infos()
     movies_repo = MovieRepositoryImpl(get_thread_db())
     movie = MovieService(movies_repo).get_movie_by_id(movie_id)
     return render_template(
@@ -55,7 +58,7 @@ def movie_detail(movie_id: int) -> str:
         movie=movie,
         username=username,
         user_id=user_id,
-        favorite_movie_ids=[favorite.movie_id for favorite in favorite_movies]
+        favorite_movie_ids=[favorite.movie_id for favorite in favorite_movies],
+        watchlist_movie_ids=[
+            watchlist.movie_id for watchlist in watchlist_movies]
     )
-
-# TODO: more movie routes here...

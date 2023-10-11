@@ -117,7 +117,7 @@ Users:
 - [X] create user / register
 - [X] login
 - [X] logout
-- [ ] delete user
+- [ ] delete user - depends on: profile page
 - [ ] profile page with user's favorites and watchlist and account deletion - depends on: Users/delete, Movies, Favorites, Watchlist
 
 favorites:
@@ -127,8 +127,8 @@ favorites:
 
 Watchlist:
 
-- [ ] add movie - depends on: Users, Movies
-- [ ] remove movie - depends on: Users, Movies
+- [X] add movie - depends on: Users, Movies
+- [X] remove movie - depends on: Users, Movies
 
 Movies:
 

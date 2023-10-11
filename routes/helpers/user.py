@@ -3,12 +3,16 @@ from adapters.authentication_service_impl import AuthenticationServiceImpl
 from adapters.db_connection import get_thread_db
 from adapters.favorite_repository_impl import FavoriteRepositoryImpl
 from adapters.user_repository_impl import UserRepositoryImpl
+from adapters.watchlist_repository_impl import WatchlistRepositoryImpl
 from domain.entities.favorite import Favorite
+from domain.entities.watchlist_item import WatchlistItem
 from domain.services.favorite_service import FavoriteService
 from domain.services.user_service import UserService
+from domain.services.watchlist_service import WatchlistService
 
 
-def get_user_infos() -> tuple[str | None, int | None, list[Favorite]]:
+def get_user_infos(
+) -> tuple[str | None, int | None, list[Favorite], list[WatchlistItem]]:
     user_repository = UserRepositoryImpl(get_thread_db())
     user_service = UserService(user_repository)
     authentication_service = AuthenticationServiceImpl(
@@ -25,8 +29,14 @@ def get_user_infos() -> tuple[str | None, int | None, list[Favorite]]:
         favorite_service = FavoriteService(favorite_repository)
         favorite_movies: list[Favorite] = favorite_service.get_favorites(
             user_id)
+
+        watchlist_repository = WatchlistRepositoryImpl(get_thread_db())
+        watchlist_service = WatchlistService(watchlist_repository)
+        watchlist_movies: list[WatchlistItem] = watchlist_service\
+            .get_watchlist(user_id)
     else:
         user_id = None
         username = None
         favorite_movies = []
-    return username, user_id, favorite_movies
+        watchlist_movies = []
+    return username, user_id, favorite_movies, watchlist_movies

@@ -5,6 +5,10 @@
 <script>
   const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
   const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
+
+  const add_to_watchlist_base_url = "{{ url_for('watchlist.add_movie') }}";
+  const remove_from_watchlist_base_url = "{{ url_for('watchlist.remove_movie') }}";
+
   document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('.show-details').forEach(button => {
       button.addEventListener('click', () => {
@@ -16,6 +20,7 @@
   });
 </script>
 <script src="{{ url_for('static', filename='scripts/favorites.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/watchlist.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -25,7 +30,7 @@
   {% for tag in available_tags %}
   <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
     checked {% endif %}{% endif %}>
-  {{ tag}}<br>
+  {{ tag }}<br>
   {% endfor %}
   <br>
   <label>Note minimale :</label>
@@ -41,6 +46,7 @@
     <p>{{ movie.vote_average}}</p>
     <p>{{ movie.id }}</p>
     {% include 'components/favorites_component.html' %}
+    {% include 'components/watchlist_component.html' %}
 
     <button class="show-details" data-movie-id="{{ movie.id }}">Details</button>
 

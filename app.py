@@ -5,10 +5,11 @@ from flask_migrate import Migrate
 from routes.movie_routes import movie_bp
 from routes.authentication_routes import authentication_bp
 from routes.favorite_routes import favorite_bp
+from routes.watchlist_routes import watchlist_bp
 
 app = Flask(__name__)
 
-# Cookies
+# Session
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
@@ -21,6 +22,7 @@ migrate = Migrate(app, db)
 app.register_blueprint(movie_bp)
 app.register_blueprint(authentication_bp, url_prefix='/auth')
 app.register_blueprint(favorite_bp, url_prefix='/favorites')
+app.register_blueprint(watchlist_bp, url_prefix='/watchlist')
 
 __all__ = ["app", "db"]
 
