@@ -48,3 +48,9 @@ def get_user_id(
 ) -> int:
     user: AuthUser = session["movie_picker_user"]
     return user["id"]
+
+
+def get_username(
+) -> str:
+    user: AuthUser = session["movie_picker_user"]
+    return user["username"]

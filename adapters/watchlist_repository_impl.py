@@ -1,4 +1,5 @@
 import sqlite3
+from domain.entities.movie import Movie
 from domain.entities.watchlist_item import WatchlistItem
 from domain.repositories.watchlist_repository import WatchlistRepository
 
@@ -13,6 +14,20 @@ class WatchlistRepositoryImpl(WatchlistRepository):
             "SELECT * FROM watchlist WHERE user_id = ?", (user_id,))
         rows = cursor.fetchall()
         return [WatchlistItem(*row) for row in rows]
+
+    def get_watchlist_movies(self, user_id: int) -> list[Movie]:
+        cursor = self.db_connect.cursor()
+        cursor.execute(
+            """
+            SELECT movies.*
+            FROM watchlist
+            JOIN movies ON movies.id = watchlist.movie_id
+            WHERE watchlist.user_id = ?
+            """,
+            (user_id,)
+        )
+        rows = cursor.fetchall()
+        return [Movie(*row) for row in rows]
 
     def add_item(self, user_id: int, movie_id: int) -> WatchlistItem:
         cursor = self.db_connect.cursor()

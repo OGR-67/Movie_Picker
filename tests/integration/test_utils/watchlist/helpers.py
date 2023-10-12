@@ -15,6 +15,18 @@ def when_get_watchlist(
     return test_case.watchlist_repository.get_watchlist(user_id)
 
 
+def when_adding_item(
+    test_case: CustomTestCase, user_id: int, movie_id: int
+) -> WatchlistItem:
+    return test_case.watchlist_repository.add_item(user_id, movie_id)
+
+
+def when_removing_item(
+    test_case: CustomTestCase, user_id: int, movie_id: int
+) -> None:
+    test_case.watchlist_repository.remove_item(user_id, movie_id)
+
+
 def then_watchlist_is_found(
     test_case: CustomTestCase,
     watchlist: list[WatchlistItem],
@@ -28,12 +40,6 @@ def then_watchlist_is_found(
             watchlist[i].movie_id, expected_items[i].movie_id)
 
 
-def when_adding_item(
-    test_case: CustomTestCase, user_id: int, movie_id: int
-) -> WatchlistItem:
-    return test_case.watchlist_repository.add_item(user_id, movie_id)
-
-
 def then_item_is_added(
     test_case: CustomTestCase,
     item: WatchlistItem,
@@ -42,9 +48,3 @@ def then_item_is_added(
     test_case.assertEqual(item.id, expected_item.id)
     test_case.assertEqual(item.user_id, expected_item.user_id)
     test_case.assertEqual(item.movie_id, expected_item.movie_id)
-
-
-def when_removing_item(
-    test_case: CustomTestCase, user_id: int, movie_id: int
-) -> None:
-    test_case.watchlist_repository.remove_item(user_id, movie_id)

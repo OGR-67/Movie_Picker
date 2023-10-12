@@ -124,11 +124,15 @@ favorites:
 
 - [X] add movie - depends on: Users, Movies
 - [X] remove movie - depends on: Users, Movies
+- [X] get user's favorites - depends on: Users, Movies
+- [X] get user's favorite movies - depends on: Users, Movies
 
 Watchlist:
 
 - [X] add movie - depends on: Users, Movies
 - [X] remove movie - depends on: Users, Movies
+- [X] get user's watchlist - depends on: Users, Movies
+- [X] get user's watchlist movies - depends on: Users, Movies
 
 Movies:
 

@@ -77,6 +77,19 @@ class TestFavoriteRepositoryIntegration_Get_Favorites(CustomTestCase):
         then_favorite_list_is_found(
             self, favorite_list, expected_favorites)
 
+    def test_get_favorite_movies(self) -> None:
+        # Given
+        movie = given_a_movie_in_db(self.db_conn)
+        user = given_a_user_in_db(self)
+        expected_favorite_movies = [movie]
+
+        # When
+        when_adding_favorite(self, user.id, movie.id)
+        favorite_movies = self.favorite_repository.get_favorite_movies(user.id)
+
+        # Then
+        self.assertEqual(favorite_movies, expected_favorite_movies)
+
     def test_get_favorites_multiple(self) -> None:
         # Given
         movie1 = given_a_movie_in_db(self.db_conn)

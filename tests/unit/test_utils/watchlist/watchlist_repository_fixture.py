@@ -1,5 +1,8 @@
+from domain.entities.movie import Movie
 from domain.entities.watchlist_item import WatchlistItem
 from domain.repositories.watchlist_repository import WatchlistRepository
+from tests.unit.test_utils.movies.movie_repository_fixture import \
+    MovieRepositoryFixture
 
 
 class WatchlistRepositoryFixture(WatchlistRepository):
@@ -23,3 +26,6 @@ class WatchlistRepositoryFixture(WatchlistRepository):
             lambda item: item.user_id == user_id,
             self._watchlist
         ))
+
+    def get_watchlist_movies(self, user_id: int) -> list[Movie]:
+        return [MovieRepositoryFixture().movies[0]]

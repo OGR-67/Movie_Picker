@@ -20,3 +20,10 @@ class UserRepositoryFixture(UserRepository):
             if user.username == username and user.password == password:
                 return user
         return None
+
+    def delete_user(self, user_id: int) -> None:
+        for user in self.users:
+            if user.id == user_id:
+                self.users.remove(user)
+                return
+        raise Exception('User not found')

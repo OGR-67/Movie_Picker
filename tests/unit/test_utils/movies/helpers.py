@@ -30,19 +30,19 @@ def when_get_movies(
         page=1, filter_tags=filter_tags, min_rating=min_rating)
 
 
+def when_get_movie_by_id(
+    test_case: CustomTestCase,
+    movie_id: int
+) -> Movie | None:
+    return test_case.movie_service.get_movie_by_id(movie_id)
+
+
 def then_results_equals_expected_movies(
     test_case: CustomTestCase,
     results: dict[str, Any],
     expected_movies: list[Movie]
 ) -> None:
     test_case.assertEqual(results["movies"], expected_movies)
-
-
-def when_get_movie_by_id(
-    test_case: CustomTestCase,
-    movie_id: int
-) -> Movie | None:
-    return test_case.movie_service.get_movie_by_id(movie_id)
 
 
 def then_result_equals_expected_movie(

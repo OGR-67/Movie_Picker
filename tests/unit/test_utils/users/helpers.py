@@ -22,6 +22,21 @@ def when_register(
     return user_service.register(username, password)
 
 
+def when_user_login(
+    user_service: UserServiceInterface,
+    username: str,
+    password: str
+) -> User | None:
+    return user_service.login(username, password)
+
+
+def when_delete_user(
+    test_case: CustomTestCase,
+    user_id: int
+) -> None:
+    test_case.user_service.delete_profile(user_id)
+
+
 def then_user_is_registered(
     test_case: CustomTestCase,
     user: User,
@@ -34,41 +49,6 @@ def then_user_is_registered(
         user.password, test_case.user_service.hash_password(password))
 
 
-def then_error_message_is_username_already_exists(
-    test_case: CustomTestCase,
-    exception: Exception
-) -> None:
-    test_case.assertEqual(str(exception), 'Username already exists')
-
-
-def then_error_message_is_password_too_short(
-    test_case: CustomTestCase,
-    exception: Exception
-) -> None:
-    test_case.assertEqual(str(exception), 'Password too short')
-
-
-def then_error_message_is_username_too_short(
-    test_case: CustomTestCase,
-    exception: Exception
-) -> None:
-    test_case.assertEqual(str(exception), 'Username too short')
-
-
-def then_error_message_is_username_cannot_contain_spaces(
-    test_case: CustomTestCase,
-    exception: Exception
-) -> None:
-    test_case.assertEqual(str(exception), 'Username cannot contain spaces')
-
-
-def then_error_message_is_username_or_password_incorrect(
-    test_case: CustomTestCase,
-    exception: Exception
-) -> None:
-    test_case.assertEqual(str(exception), 'username or password is incorrect')
-
-
 def then_user_is_logged_in(
     test_case: CustomTestCase,
     user: User,
@@ -79,3 +59,17 @@ def then_user_is_logged_in(
     test_case.assertEqual(user.username, username)
     test_case.assertEqual(
         user.password, test_case.user_service.hash_password(password))
+
+
+def then_user_table_is_empty(
+    test_case: CustomTestCase
+) -> None:
+    test_case.assertEqual(len(test_case.user_repository.get_users()), 0)
+
+
+def then_error_message_is(
+    test_case: CustomTestCase,
+    exception: Exception,
+    message: str
+) -> None:
+    test_case.assertEqual(str(exception), message)

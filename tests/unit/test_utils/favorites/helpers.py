@@ -1,4 +1,5 @@
 from domain.entities.favorite import Favorite
+from domain.entities.movie import Movie
 from domain.repositories.favorite_repository import FavoriteRepository
 from domain.services.favorite_service import \
     FavoriteService, \
@@ -18,11 +19,26 @@ def given_a_favorite_service(
     return FavoriteService(test_case.favorite_repository)
 
 
+def when_add_favorite(
+    test_case: CustomTestCase,
+    user_id: int,
+    movie_id: int
+) -> Favorite:
+    return test_case.favorite_service.add_favorite(user_id, movie_id)
+
+
 def when_get_favorites(
     test_case: CustomTestCase,
     user_id: int
 ) -> list[Favorite]:
     return test_case.favorite_service.get_favorites(user_id)
+
+
+def when_get_favorite_movies(
+    test_case: CustomTestCase,
+    user_id: int
+) -> list[Movie]:
+    return test_case.favorite_service.get_favorite_movies(user_id)
 
 
 def then_results_equals_expected_favorite(

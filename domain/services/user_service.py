@@ -20,6 +20,10 @@ class UserServiceInterface(ABC):
     def hash_password(self, password: str) -> str:
         pass
 
+    @abstractmethod
+    def delete_profile(self, user_id: int) -> None:
+        pass
+
 
 class UserService(UserServiceInterface):
     def __init__(self, user_repository: UserRepository):
@@ -55,3 +59,6 @@ class UserService(UserServiceInterface):
 
     def hash_password(self, password: str) -> str:
         return hashlib.sha256(password.encode()).hexdigest()
+
+    def delete_profile(self, user_id: int) -> None:
+        self.user_repository.delete_user(user_id)

@@ -1,11 +1,16 @@
 from domain.entities.watchlist_item import WatchlistItem
 from tests.custom_test_case import CustomTestCase
+from tests.unit.test_utils.movies.movie_repository_fixture import \
+    MovieRepositoryFixture
 from tests.unit.test_utils.watchlist.helpers import \
     given_a_watchlist_repository, \
     given_a_watchlist_service, \
     then_item_is_added, \
     then_watchlist_is, \
-    when_add_item
+    when_add_item, \
+    when_delete_item, \
+    when_get_watchlist, \
+    when_get_watchlist_movies
 
 
 class TestWatchlistService(CustomTestCase):
@@ -30,7 +35,7 @@ class TestWatchlistService(CustomTestCase):
         expectedWatchlist: list[WatchlistItem] = []
 
         # When
-        watchlist = self.watchlist_service.get_watchlist(user_id)
+        watchlist = when_get_watchlist(self, user_id)
 
         # Then
         then_watchlist_is(self, watchlist, expectedWatchlist)
@@ -45,11 +50,22 @@ class TestWatchlistService(CustomTestCase):
 
         # When
         item = when_add_item(self, user_id, movie_id)
-        watchlist = self.watchlist_service.get_watchlist(user_id)
+        watchlist = when_get_watchlist(self, user_id)
 
         # Then
         then_item_is_added(self, item, user_id, movie_id)
         then_watchlist_is(self, watchlist, expectedWatchlist)
+
+    def test_get_watchlist_movies(self: CustomTestCase) -> None:
+        # Given
+        user_id = 1
+        expected_movies = [MovieRepositoryFixture().movies[0]]
+
+        # When
+        movies = when_get_watchlist_movies(self, user_id)
+
+        # Then
+        assert movies == expected_movies
 
     def test_remove_item(self: CustomTestCase) -> None:
         # Given
@@ -59,8 +75,8 @@ class TestWatchlistService(CustomTestCase):
 
         # When
         when_add_item(self, user_id, movie_id)
-        self.watchlist_service.remove_from_watchlist(user_id, movie_id)
-        watchlist = self.watchlist_service.get_watchlist(user_id)
+        when_delete_item(self, user_id, movie_id)
+        watchlist = when_get_watchlist(self, user_id)
 
         # Then
         then_watchlist_is(self, watchlist, expectedWatchlist)

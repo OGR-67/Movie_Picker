@@ -14,3 +14,7 @@ class UserRepository(ABC):
     @abstractmethod
     def check_credentials(self, username: str, password: str) -> User | None:
         pass
+
+    @abstractmethod
+    def delete_user(self, user_id: int) -> None:
+        pass

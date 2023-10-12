@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from domain.entities.movie import Movie
 from domain.entities.watchlist_item import WatchlistItem
 from domain.repositories.watchlist_repository import WatchlistRepository
 
@@ -9,6 +10,10 @@ class WatchlistServiceInterface(ABC):
 
     @abstractmethod
     def get_watchlist(self, user_id: int) -> list[WatchlistItem]:
+        pass
+
+    @abstractmethod
+    def get_watchlist_movies(self, user_id: int) -> list[Movie]:
         pass
 
     @abstractmethod
@@ -26,6 +31,9 @@ class WatchlistService(WatchlistServiceInterface):
 
     def get_watchlist(self, user_id: int) -> list[WatchlistItem]:
         return self.watchlist_repository.get_watchlist(user_id)
+
+    def get_watchlist_movies(self, user_id: int) -> list[Movie]:
+        return self.watchlist_repository.get_watchlist_movies(user_id)
 
     def add_to_watchlist(self, user_id: int, movie_id: int) -> WatchlistItem:
         return self.watchlist_repository.add_item(user_id, movie_id)

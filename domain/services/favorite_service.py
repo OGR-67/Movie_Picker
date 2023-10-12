@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from domain.entities.favorite import Favorite
+from domain.entities.movie import Movie
 from domain.repositories.favorite_repository import FavoriteRepository
 
 
@@ -9,6 +10,10 @@ class FavoriteServiceInterface(ABC):
 
     @abstractmethod
     def get_favorites(self, user_id: int) -> list[Favorite]:
+        pass
+
+    @abstractmethod
+    def get_favorite_movies(self, user_id: int) -> list[Movie]:
         pass
 
     @abstractmethod
@@ -26,6 +31,9 @@ class FavoriteService(FavoriteServiceInterface):
 
     def get_favorites(self, user_id: int) -> list[Favorite]:
         return self.favorite_repository.get_favorites(user_id)
+
+    def get_favorite_movies(self, user_id: int) -> list[Movie]:
+        return self.favorite_repository.get_favorite_movies(user_id)
 
     def add_favorite(self, user_id: int, movie_id: int) -> Favorite:
         return self.favorite_repository.add_favorite(user_id, movie_id)

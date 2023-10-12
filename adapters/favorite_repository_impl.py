@@ -1,5 +1,6 @@
 import sqlite3
 from domain.entities.favorite import Favorite
+from domain.entities.movie import Movie
 from domain.repositories.favorite_repository import FavoriteRepository
 
 
@@ -13,6 +14,20 @@ class FavoriteRepositoryImpl(FavoriteRepository):
             "SELECT * FROM favorites WHERE user_id = ?", (user_id,))
         rows = cursor.fetchall()
         return [Favorite(*row) for row in rows]
+
+    def get_favorite_movies(self, user_id: int) -> list[Movie]:
+        cursor = self.db_connect.cursor()
+        cursor.execute(
+            """
+            SELECT movies.*
+            FROM favorites
+            JOIN movies ON movies.id = favorites.movie_id
+            WHERE favorites.user_id = ?
+            """,
+            (user_id,)
+        )
+        rows = cursor.fetchall()
+        return [Movie(*row) for row in rows]
 
     def add_favorite(self, user_id: int, movie_id: int) -> Favorite:
         cursor = self.db_connect.cursor()

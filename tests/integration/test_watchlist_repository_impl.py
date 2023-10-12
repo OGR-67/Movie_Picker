@@ -105,6 +105,20 @@ class TestFavoriteRepositoryIntegration(CustomTestCase):
         then_watchlist_is_found(
             self, watchlist, expected_watchlist)
 
+    def test_get_watchlist_movies(self) -> None:
+        # Given
+        user = given_a_user_in_db(self)
+        movie = given_a_movie_in_db(self.db_conn)
+        expected_watchlist_movies = [movie]
+
+        # When
+        when_adding_item(self, user.id, movie.id)
+        watchlist_movies = self.watchlist_repository.get_watchlist_movies(
+            user.id)
+
+        # Then
+        self.assertEqual(watchlist_movies, expected_watchlist_movies)
+
     def test_remove_an_item(self) -> None:
         # Given
         movie = given_a_movie_in_db(self.db_conn)

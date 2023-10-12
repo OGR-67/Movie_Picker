@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Profile{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+{% if username %}
+<h1>{{ username }} profile</h1>
+
+<h2>Watchlist</h2>
+<ul>
+  {% for movie in watchlist_movies %}
+  <li><a href="/{{ movie.id }}">{{ movie.title }}</a></li>
+  {% endfor %}
+</ul>
+<h2>favorites</h2>
+<ul>
+  {% for movie in favorite_movies %}
+  <li><a href="/{{ movie.id }}">{{ movie.title }}</a></li>
+  {% endfor %}
+</ul>
+
+<button>Delete profile</button>
+
+{% else %}
+<h1>Profile</h1>
+<p>You must login to access to your profile</p>
+{% endif %}
+{% endblock %}

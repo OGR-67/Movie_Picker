@@ -2,14 +2,13 @@ from tests.custom_test_case import CustomTestCase
 from tests.unit.test_utils.users.helpers import \
     given_a_user_repository, \
     given_a_user_service, \
-    then_error_message_is_password_too_short, \
-    then_error_message_is_username_already_exists, \
-    then_error_message_is_username_cannot_contain_spaces, \
-    then_error_message_is_username_or_password_incorrect, \
-    then_error_message_is_username_too_short, \
+    then_error_message_is, \
     then_user_is_logged_in, \
     then_user_is_registered, \
-    when_register
+    then_user_table_is_empty, \
+    when_delete_user, \
+    when_register, \
+    when_user_login
 
 
 class TestRegister(CustomTestCase):
@@ -39,7 +38,8 @@ class TestRegister(CustomTestCase):
             when_register(self.user_service, username, password)
 
         # Then
-        then_error_message_is_username_already_exists(self, context.exception)
+        then_error_message_is(self, context.exception,
+                              "Username already exists")
 
     def test_register_with_username_too_short(self: CustomTestCase) -> None:
         # Given
@@ -51,7 +51,7 @@ class TestRegister(CustomTestCase):
             when_register(self.user_service, username, password)
 
         # Then
-        then_error_message_is_username_too_short(self, context.exception)
+        then_error_message_is(self, context.exception, "Username too short")
 
     def test_register_with_space_in_username(self: CustomTestCase) -> None:
         # Given
@@ -63,8 +63,8 @@ class TestRegister(CustomTestCase):
             when_register(self.user_service, username, password)
 
         # Then
-        then_error_message_is_username_cannot_contain_spaces(
-            self, context.exception)
+        then_error_message_is(
+            self, context.exception, "Username cannot contain spaces")
 
     def test_register_with_short_password(self: CustomTestCase) -> None:
         # Given
@@ -76,7 +76,7 @@ class TestRegister(CustomTestCase):
             when_register(self.user_service, username, password)
 
         # Then
-        then_error_message_is_password_too_short(self, context.exception)
+        then_error_message_is(self, context.exception, 'Password too short')
 
 
 class TestLogin(CustomTestCase):
@@ -94,8 +94,8 @@ class TestLogin(CustomTestCase):
             self.user_service.login(username, password)
 
         # Then
-        then_error_message_is_username_or_password_incorrect(
-            self, context.exception)
+        then_error_message_is(
+            self, context.exception, 'username or password is incorrect')
 
     def test_login_with_registered_user_wrong_credentials(
         self: CustomTestCase
@@ -110,8 +110,8 @@ class TestLogin(CustomTestCase):
             self.user_service.login(username, 'wrong password')
 
         # Then
-        then_error_message_is_username_or_password_incorrect(
-            self, context.exception)
+        then_error_message_is(
+            self, context.exception, 'username or password is incorrect')
 
     def test_login_with_registered_user_correct_credentials(
         self: CustomTestCase
@@ -122,7 +122,38 @@ class TestLogin(CustomTestCase):
         when_register(self.user_service, username, password)
 
         # When
-        user = self.user_service.login(username, password)
+        user = when_user_login(self.user_service, username, password)
 
         # Then
+        assert user is not None
         then_user_is_logged_in(self, user, username, password)
+
+
+class TestDeleteProfile(CustomTestCase):
+    def setUp(self) -> None:
+        self.user_repository = given_a_user_repository()
+        self.user_service = given_a_user_service(self)
+
+    def test_delete_profile(self: CustomTestCase) -> None:
+        # Given
+        username = 'user1'
+        password = 'password 1'
+        user = when_register(self.user_service, username, password)
+
+        # When
+        when_delete_user(self, user.id)
+
+        # Then
+        then_user_table_is_empty(self)
+
+    def test_delete_profile_user_not_found(self: CustomTestCase) -> None:
+        # Given
+        user_id = 1
+
+        # When
+        with self.assertRaises(Exception) as context:
+            when_delete_user(self, user_id)
+
+        # Then
+        then_user_table_is_empty(self)
+        then_error_message_is(self, context.exception, "User not found")

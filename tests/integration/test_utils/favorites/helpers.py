@@ -19,6 +19,22 @@ def when_get_favorites(
     return test_case.favorite_repository.get_favorites(user_id)
 
 
+def when_adding_favorite(
+    test_case: CustomTestCase,
+    user_id: int,
+    movie_id: int
+) -> Favorite:
+    return test_case.favorite_repository.add_favorite(user_id, movie_id)
+
+
+def when_removing_favorite(
+    test_case: CustomTestCase,
+    user_id: int,
+    movie_id: int
+) -> None:
+    return test_case.favorite_repository.remove_favorite(user_id, movie_id)
+
+
 def then_favorite_list_is_found(
     test_case: CustomTestCase,
     favorite_list: list[Favorite],
@@ -34,14 +50,6 @@ def then_favorite_list_is_found(
             favorite_list[i].movie_id, expected_favorite_list[i].movie_id)
 
 
-def when_adding_favorite(
-    test_case: CustomTestCase,
-    user_id: int,
-    movie_id: int
-) -> Favorite:
-    return test_case.favorite_repository.add_favorite(user_id, movie_id)
-
-
 def then_favorite_is_added(
     test_case: CustomTestCase,
     favorite: Favorite,
@@ -50,11 +58,3 @@ def then_favorite_is_added(
     test_case.assertEqual(favorite.id, expected_favorite.id)
     test_case.assertEqual(favorite.user_id, expected_favorite.user_id)
     test_case.assertEqual(favorite.movie_id, expected_favorite.movie_id)
-
-
-def when_removing_favorite(
-    test_case: CustomTestCase,
-    user_id: int,
-    movie_id: int
-) -> None:
-    return test_case.favorite_repository.remove_favorite(user_id, movie_id)

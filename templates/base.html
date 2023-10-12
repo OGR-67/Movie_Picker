@@ -15,7 +15,7 @@
     <a href="{{ url_for('auth.register') }}">Register</a>
     {% else %}
     <a href="{{ url_for('auth.logout') }}">Logout</a>
-    <a href="">Profile</a>
+    <a href="{{ url_for('profile.profile') }}">Profile</a>
     {% endif %}
   </nav>
   {% if username %}

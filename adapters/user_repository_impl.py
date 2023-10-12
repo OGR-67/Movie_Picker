@@ -36,3 +36,12 @@ class UserRepositoryImpl(UserRepository):
         if row is None:
             return None
         return User(*row)
+
+    def delete_user(self, user_id: int) -> None:
+        cursor = self.connect.execute(
+            "DELETE FROM users WHERE id = ?",
+            (user_id,)
+        )
+        if cursor.rowcount == 0:
+            raise Exception('User not found')
+        self.connect.commit()

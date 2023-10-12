@@ -12,17 +12,6 @@ def given_a_movie_repository(
     return MovieRepositoryImpl(db_connect)
 
 
-def when_get_movie_by_id(
-    test_case: CustomTestCase,
-    movie_id: int
-) -> Movie | None:
-    return test_case.movie_repository.get_movie(movie_id)
-
-
-def then_movie_is_not_found(movie: Movie | None) -> None:
-    assert movie is None
-
-
 def given_a_movie_in_db(db_connect: sqlite3.Connection) -> Movie:
     # We crate the movie in the db
     cursor = db_connect.cursor()
@@ -62,17 +51,11 @@ def given_a_movie_in_db(db_connect: sqlite3.Connection) -> Movie:
     return Movie(*row)
 
 
-def then_movie_is_found(
+def when_get_movie_by_id(
     test_case: CustomTestCase,
-    movie: Movie | None,
-    movie_id: int,
-    properties_to_check: dict[str, type]
-) -> None:
-    assert movie is not None
-    test_case.assertEqual(movie.id, movie_id)
-    for property_name, property_type in properties_to_check.items():
-        test_case.assertIsInstance(
-            getattr(movie, property_name), property_type)
+    movie_id: int
+) -> Movie | None:
+    return test_case.movie_repository.get_movie(movie_id)
 
 
 def when_get_movies(
@@ -85,6 +68,23 @@ def when_get_movies(
         filter_tags=filter_tags,
         min_rating=min_rating
     )
+
+
+def then_movie_is_not_found(movie: Movie | None) -> None:
+    assert movie is None
+
+
+def then_movie_is_found(
+    test_case: CustomTestCase,
+    movie: Movie | None,
+    movie_id: int,
+    properties_to_check: dict[str, type]
+) -> None:
+    assert movie is not None
+    test_case.assertEqual(movie.id, movie_id)
+    for property_name, property_type in properties_to_check.items():
+        test_case.assertIsInstance(
+            getattr(movie, property_name), property_type)
 
 
 def then_movies_are_found(

@@ -20,11 +20,11 @@ def when_get_users(test_case: CustomTestCase) -> list[User]:
     return test_case.user_repository.get_users()
 
 
-def then_users_are_found(test_case: CustomTestCase, users: list[User]) -> None:
-    test_case.assertIsInstance(users, list)
-    test_case.assertGreaterEqual(len(users), 0)
-    for user in users:
-        test_case.assertIsInstance(user, User)
+def when_delete_user(
+    test_case: CustomTestCase,
+    user_id: int
+) -> None:
+    test_case.user_repository.delete_user(user_id)
 
 
 def when_add_user(
@@ -33,6 +33,24 @@ def when_add_user(
     password: str
 ) -> User:
     return test_case.user_repository.add_user(username, password)
+
+
+def when_credentials_are_checked(
+    test_case: CustomTestCase,
+    username: str,
+    password: str
+) -> User | None:
+    return test_case.user_repository.check_credentials(
+        username,
+        password
+    )
+
+
+def then_users_are_found(test_case: CustomTestCase, users: list[User]) -> None:
+    test_case.assertIsInstance(users, list)
+    test_case.assertGreaterEqual(len(users), 0)
+    for user in users:
+        test_case.assertIsInstance(user, User)
 
 
 def then_user_is_registered(
@@ -65,3 +83,9 @@ def then_user_is_not_loggedIn(
     user: User | None,
 ) -> None:
     test_case.assertIsNone(user)
+
+
+def then_user_table_is_empty(
+    test_case: CustomTestCase
+) -> None:
+    test_case.assertEqual(len(test_case.user_repository.get_users()), 0)
