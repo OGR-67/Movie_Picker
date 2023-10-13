@@ -1,12 +1,13 @@
 from flask import Flask
-from flask_session import Session  # type: ignore
-from models.movie_model import db
 from flask_migrate import Migrate
+from flask_session import Session  # type: ignore
+from flask_sqlalchemy import SQLAlchemy
 from routes.movie_routes import movie_bp
 from routes.authentication_routes import authentication_bp
 from routes.favorite_routes import favorite_bp
 from routes.watchlist_routes import watchlist_bp
 from routes.profile_routes import profile_bp
+
 
 app = Flask(__name__)
 
@@ -16,8 +17,10 @@ Session(app)
 
 # Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movies_db.db'
+db: SQLAlchemy = SQLAlchemy()
 db.init_app(app)
-migrate = Migrate(app, db)
+Migrate(app, db)
+
 
 # Routes
 app.register_blueprint(movie_bp)
@@ -26,7 +29,7 @@ app.register_blueprint(favorite_bp, url_prefix='/favorites')
 app.register_blueprint(watchlist_bp, url_prefix='/watchlist')
 app.register_blueprint(profile_bp, url_prefix='/profile')
 
-__all__ = ["app", "db"]
+__all__ = ["app"]
 
 if __name__ == "__main__":
     app.secret_key = "secret_key"  # TODO: save in a file a more secure key

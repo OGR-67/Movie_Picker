@@ -1,31 +1,37 @@
 import csv
-from models.movie_model import Movie
-from app import app, db
+from adapters.db_connection import get_thread_db
 
 csv_file_path = "datas/mymoviedb.csv"
+connection = get_thread_db()
 
 
 def feed() -> None:
-    with app.app_context():
-        with open(csv_file_path, newline="", encoding="utf-8") as file:
-            csv_reader = csv.DictReader(file)
-
-            for line in csv_reader:
-                movie = Movie(
-                    title=line["Title"],
-                    original_language=line["Original_Language"],
-                    summary=line["Overview"],
-                    release_date=line["Release_Date"],
-                    poster_url=line["Poster_Url"],
-                    genre=line["Genre"],
-                    vote_average=float(
-                        line["Vote_Average"]
-                    ),
-                )
-
-                db.session.add(movie)
-
-        db.session.commit()
+    with open(csv_file_path, newline="", encoding="utf-8") as file:
+        csv_reader = csv.DictReader(file)
+        insert_sql = """
+        INSERT INTO movies (
+            title,
+            original_language,
+            summary,
+            release_date,
+            poster_url,
+            genre,
+            vote_average
+            )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """
+        for line in csv_reader:
+            movie_data = (
+                line["Title"],
+                line["Original_Language"],
+                line["Overview"],
+                line["Release_Date"],
+                line["Poster_Url"],
+                line["Genre"],
+                float(line["Vote_Average"])
+            )
+            connection.execute(insert_sql, movie_data)
+        connection.commit()
     print("Datas import done.")
 
 

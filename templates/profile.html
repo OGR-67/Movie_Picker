@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Profile{% endblock %}
 {% block head %}
+<script src="/static/scripts/profile-delete.js"></script>
+<script src="/static/scripts/profile-delete.js"></script>
 {% endblock %}
 {% block content %}
 {% if username %}
@@ -19,7 +21,7 @@
   {% endfor %}
 </ul>
 
-<button>Delete profile</button>
+<button id="delete-profile-button" data-user-id="{{ user_id }}">Delete profile</button>
 
 {% else %}
 <h1>Profile</h1>

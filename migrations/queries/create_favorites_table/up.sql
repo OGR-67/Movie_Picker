@@ -1,4 +1,5 @@
 -- for sqLite3
+
 CREATE TABLE favorites (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

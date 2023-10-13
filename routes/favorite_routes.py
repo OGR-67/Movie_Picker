@@ -13,30 +13,36 @@ favorite_bp = Blueprint('favorites', __name__)
 @favorite_bp.route('/add_movie', methods=['GET'])
 @check_authentication
 def add_movie() -> tuple[Response, int]:
-    user_id = get_user_id()
+    try:
+        user_id = get_user_id()
 
-    movie_id = get_movie_id()
-    if movie_id == -1:
-        return jsonify({"Invalid movie id"}), 400
+        movie_id = get_movie_id()
+        if movie_id == -1:
+            return jsonify({"Invalid movie id"}), 400
 
-    favorite_repository = FavoriteRepositoryImpl(get_thread_db())
-    favorite_service = FavoriteService(favorite_repository)
-    favorite_service.add_favorite(user_id, movie_id)
+        favorite_repository = FavoriteRepositoryImpl(get_thread_db())
+        favorite_service = FavoriteService(favorite_repository)
+        favorite_service.add_favorite(user_id, movie_id)
 
-    return jsonify({"message": "Created"}), 200
+        return jsonify({"message": "Created"}), 200
+    except (Exception) as e:
+        return jsonify({"message": str(e)}), 500
 
 
 @favorite_bp.route('/remove_movie', methods=['GET'])
 @check_authentication
 def remove_movie() -> tuple[Response, int]:
-    user_id = get_user_id()
+    try:
+        user_id = get_user_id()
 
-    movie_id = get_movie_id()
-    if movie_id == -1:
-        return jsonify({"Invalid movie id"}), 400
+        movie_id = get_movie_id()
+        if movie_id == -1:
+            return jsonify({"Invalid movie id"}), 400
 
-    favorite_repository = FavoriteRepositoryImpl(get_thread_db())
-    favorite_service = FavoriteService(favorite_repository)
-    favorite_service.remove_favorite(user_id, movie_id)
+        favorite_repository = FavoriteRepositoryImpl(get_thread_db())
+        favorite_service = FavoriteService(favorite_repository)
+        favorite_service.remove_favorite(user_id, movie_id)
 
-    return jsonify({"message": "Deleted"}), 200
+        return jsonify({"message": "Deleted"}), 200
+    except (Exception) as e:
+        return jsonify({"message": str(e)}), 500

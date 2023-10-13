@@ -13,8 +13,11 @@ authentication_bp = Blueprint('auth', __name__)
 
 @authentication_bp.route('/register')
 def register_page() -> str:
-    form = LoginOrRegistrationForm()
-    return render_template('register.html', form=form)
+    try:
+        form = LoginOrRegistrationForm()
+        return render_template('register.html', form=form)
+    except Exception:
+        return render_template("500.html")
 
 
 @authentication_bp.route("/register", methods=['POST'])
@@ -37,8 +40,11 @@ def register() -> Response | tuple[str, int]:
 
 @authentication_bp.route('/login')
 def login_page() -> str:
-    form = LoginOrRegistrationForm()
-    return render_template('login.html', form=form)
+    try:
+        form = LoginOrRegistrationForm()
+        return render_template('login.html', form=form)
+    except Exception:
+        return render_template("500.html")
 
 
 @authentication_bp.route('/login', methods=['POST'])

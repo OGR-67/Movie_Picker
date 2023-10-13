@@ -85,10 +85,7 @@ Or `dmypy check` to check for errors and exit
 ### Create migration
 
 - be sure to have the virtual environment activated
-- run `flask db migrate -m "message" --skip Movie` to create a migration
-
-movies table is skipped because table is already created with raw sql
-Model Movie is still used in `feed_db.py` script.
+- run `flask db revision -m "message"` to create a migration
 
 To apply migrations run `flask db upgrade`
 To revert last migration run `flask db downgrade`
@@ -117,8 +114,8 @@ Users:
 - [X] create user / register
 - [X] login
 - [X] logout
-- [ ] delete user - depends on: profile page
-- [ ] profile page with user's favorites and watchlist and account deletion - depends on: Users/delete, Movies, Favorites, Watchlist
+- [X] delete user - depends on: profile page
+- [X] profile page with user's favorites and watchlist and account deletion - depends on: Users/delete, Movies, Favorites, Watchlist
 
 favorites:
 
@@ -147,6 +144,8 @@ Movies:
 - [X] pagination
 - [ ] style
 - [ ] 404 page
+- [ ] 500 page
+- [X] try except for all routes
 
 ## Trouble Shooting
 
