@@ -105,7 +105,7 @@ To revert last migration run `flask db downgrade`
 - be sure to have the virtual environment activated
 - run `export PYTHONPATH=.` when on root directory of the project
 - run `pytest` to run all tests
-- run `pwt` to run all tests in watch mode
+- run `ptw` to run all tests in watch mode
 
 ## Features
 
