@@ -33,7 +33,7 @@ class UserService(UserServiceInterface):
         if len(password) < 8:
             raise Exception('Password too short')
 
-        if len(username) < 2:
+        if len(username) < 4:
             raise Exception('Username too short')
 
         if ' ' in username:

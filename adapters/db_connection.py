@@ -1,6 +1,7 @@
 import sqlite3
 import threading
 from paths import DB_PATH
+from typing import cast
 
 
 def get_db() -> sqlite3.Connection:
@@ -16,4 +17,4 @@ local = threading.local()
 def get_thread_db() -> sqlite3.Connection:
     if not hasattr(local, "db"):
         local.db = get_db()
-    return local.db  # type: ignore
+    return cast(sqlite3.Connection, local.db)

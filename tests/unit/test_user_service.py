@@ -18,7 +18,7 @@ class TestRegister(CustomTestCase):
 
     def test_register(self: CustomTestCase) -> None:
         # Given
-        username = 'user1'
+        username = 'user'
         password = 'password 1'
 
         # When
@@ -44,6 +44,20 @@ class TestRegister(CustomTestCase):
     def test_register_with_username_too_short(self: CustomTestCase) -> None:
         # Given
         username = 'u'
+        password = 'password 1'
+
+        # When
+        with self.assertRaises(Exception) as context:
+            when_register(self.user_service, username, password)
+
+        # Then
+        then_error_message_is(self, context.exception, "Username too short")
+
+    def test_register_with_username_still_too_short(
+        self: CustomTestCase
+    ) -> None:
+        # Given
+        username = 'usr'
         password = 'password 1'
 
         # When
