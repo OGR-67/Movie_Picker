@@ -4,6 +4,17 @@
 {% block head %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    try {
+      console.log("{{ errors }}");
+      form_errors = JSON.parse("{{ errors }}");
+      console.log(form_errors);
+      for (const [key, value] of Object.entries(form_errors)) {
+        const errorField = document.getElementById(key + '_errors');
+        errorField.textContent = value.join(' ');
+      }
+    } catch { }
+
+
     const passwordField = document.getElementById('password');
     const password2Field = document.getElementById('password2');
 
@@ -22,6 +33,8 @@
 
     passwordField.addEventListener('input', checkPasswords);
     password2Field.addEventListener('input', checkPasswords);
+
+
   });
 </script>
 {% endblock %}
@@ -45,7 +58,7 @@
 {
 'field_name': 'password2',
 'label': 'Confirm password',
-'input_type': 'password2',
+'input_type': 'password',
 'is_required': true
 }] %}
 {% set submit_button_text = "Register" %}
@@ -53,4 +66,9 @@
 {% set action = url_for('auth.register') %}
 {% include "components/form.html" %}
 
+{% if error %}
+<div class="alert alert-danger" role="alert">
+  This username is already taken
+</div>
+{% endif %}
 {% endblock %}

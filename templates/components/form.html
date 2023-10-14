@@ -5,6 +5,11 @@
     <label for="{{ field.field_name }}">{{ field.label }}</label>
     <input type="{{ field.input_type }}" class="form-control" id="{{ field.field_name }}" name="{{ field.field_name }}"
       {% if field.is_required %}required{% endif %}>
+    <p id="{{ field.field_name }}_errors" class="text-danger">
+      {% if errors and errors[field.field_name] %}
+      {{ ", ".join(errors[field.field_name]) }}
+      {% endif %}
+    </p>
   </div>
   {% endfor %}
   <div id="error-field" class="text-danger"></div>

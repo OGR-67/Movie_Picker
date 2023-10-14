@@ -22,20 +22,26 @@ def register_page() -> str:
 
 @authentication_bp.route("/register", methods=['POST'])
 def register() -> Response | tuple[str, int]:
+    form = LoginOrRegistrationForm(request.form)
     try:
-        form = LoginOrRegistrationForm(request.form)
         if form.validate_on_submit():
-            username = request.form['username']
-            password = request.form['password']
+            username = request.form["username"]
+            password = request.form["password"]
 
             user_repository = UserRepositoryImpl(get_thread_db())
             user_service = UserService(user_repository)
             user_service.register(username, password)
 
             return redirect(url_for('auth.login'))
-        return str(form.errors), 400
-    except Exception:
-        return str(Exception), 400
+        return render_template(
+            'register.html', form=form, errors=form.errors
+        ), 400
+    except Exception as e:
+        if str(e) == "Username already exists":
+            return render_template(
+                'register.html', form=form, error="Username already exists"
+            ), 409
+        return render_template('500.html'), 500
 
 
 @authentication_bp.route('/login')
@@ -49,8 +55,8 @@ def login_page() -> str:
 
 @authentication_bp.route('/login', methods=['POST'])
 def login() -> Response | tuple[str, int]:
+    form = LoginOrRegistrationForm(request.form)
     try:
-        form = LoginOrRegistrationForm(request.form)
         if form.validate_on_submit():
             username = request.form['username']
             password = request.form['password']
@@ -62,9 +68,17 @@ def login() -> Response | tuple[str, int]:
             authentication_service.login(username, password)
 
             return redirect(url_for('movies.home_movies'))
-        return str(form.errors), 401
-    except Exception as e:
-        return str(e), 401
+        return render_template(
+            'login.html',
+            form=form,
+            errors=form.errors
+        ), 401
+    except Exception:
+        return render_template(
+            'login.html',
+            form=form,
+            error="Unable to connect with provided credentials"
+        ), 401
 
 
 @authentication_bp.route('/logout')
