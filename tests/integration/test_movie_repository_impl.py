@@ -1,3 +1,4 @@
+from datetime import date
 import unittest
 from tests.custom_test_case import CustomTestCase
 from tests.integration.test_utils.commons.db_connection_test import \
@@ -40,7 +41,7 @@ class TestMovieRepositoryIntegration_Get_Movie(CustomTestCase):
             "title": str,
             "original_language": str,
             "summary": str,
-            "release_date": str,
+            "release_date": date,
             "poster_url": str,
             "genre": list,
             "vote_average": float

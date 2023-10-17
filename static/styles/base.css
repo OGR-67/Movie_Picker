@@ -1,0 +1,41 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #222222;
+}
+
+.btn {
+    margin: 5px 0;
+    padding: 4px 8px;
+    font-size: 16px;
+    border-radius: 3px;
+    width: fit-content;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+}
+
+.remove {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.add {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.flex {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}

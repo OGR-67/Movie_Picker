@@ -1,3 +1,4 @@
+from datetime import datetime
 import sqlite3
 from typing import Any
 from domain.entities.movie import Movie
@@ -13,11 +14,8 @@ class MovieRepositoryImpl(MovieRepository):
         cursor = self.connect.execute(
             "SELECT * FROM movies WHERE id=?", (movie_id,))
         row = cursor.fetchone()
-        GENRE_INDEX = 6
         if row:
-            row = list(row)
-            row[GENRE_INDEX] = self._string_list_to_array(row[GENRE_INDEX])
-            return Movie(*row)
+            return self._convert_rows_to_movies([row])[0]
         return None
 
     def list_movies(
@@ -50,10 +48,17 @@ class MovieRepositoryImpl(MovieRepository):
 
     def _convert_rows_to_movies(self, rows: list[Any]) -> list[Movie]:
         movies = []
+        GENRE_INDEX = 6
+        DATE_INDEX = 4
         for row in rows:
-            GENRE_INDEX = 6
             row = list(row)
             row[GENRE_INDEX] = self._string_list_to_array(row[GENRE_INDEX])
+            date_array = row[DATE_INDEX].split("-")
+            row[DATE_INDEX] = datetime(
+                year=int(date_array[0]),
+                month=int(date_array[1]),
+                day=int(date_array[2])
+            )
             movies.append(Movie(*row))
         return movies
 

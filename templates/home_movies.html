@@ -10,17 +10,31 @@
   const remove_from_watchlist_base_url = "{{ url_for('watchlist.remove_movie') }}";
 
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.show-details').forEach(button => {
+    document.querySelectorAll('.movie-card__details-btn').forEach(button => {
       button.addEventListener('click', () => {
         const movieId = +button.getAttribute("data-movie-id");
         console.log(movieId);
         window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
       });
     });
+
+    document.querySelectorAll(".movie-card__rating").forEach(rating => {
+      const ratingValue = Math.ceil(+rating.innerHTML / 2);
+      const star = "&#9733"; // &#9733 is the star
+      rating.innerHTML = "";
+      for (let i = 0; i < 5; i++) {
+        rating.innerHTML += i <= ratingValue ? star : "&#9734"; // &#9734 is the star outline
+      }
+    });
   });
+
+
 </script>
 <script src="{{ url_for('static', filename='scripts/favorites.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/watchlist.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/home.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/movie_card.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/genre.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -40,15 +54,16 @@
 <div class="movie-grid">
   {% for movie in movies %}
   <div class="movie-card">
-    <img src="{{movie.poster_url}}" alt="{{movie.title}} poster">
-    <h2>{{ movie.title }}</h2>
-    <p>{{ movie.release_date }}</p>
-    <p>{{ movie.vote_average}}</p>
-    <p>{{ movie.id }}</p>
+    <img class="movie-card__image" src="{{movie.poster_url}}" alt="{{movie.title}} poster">
+    <h2 class="movie-card__title">{{ movie.title }}</h2>
+    <div class="movie-card__infos_container">
+      <p class="movie-card__date">{{ movie.release_date.year }}</p>
+      <p class="movie-card__rating">{{ movie.vote_average }}</p>
+    </div>
     {% include 'components/favorites_component.html' %}
     {% include 'components/watchlist_component.html' %}
 
-    <button class="show-details" data-movie-id="{{ movie.id }}">Details</button>
+    <button class="btn movie-card__details-btn" data-movie-id="{{ movie.id }}">Details</button>
 
     <div class="genre-tags">
       {% for genre in movie.genre %}
