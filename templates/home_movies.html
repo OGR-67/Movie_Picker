@@ -10,6 +10,7 @@
   const remove_from_watchlist_base_url = "{{ url_for('watchlist.remove_movie') }}";
 
   document.addEventListener("DOMContentLoaded", function () {
+    // Add event listeners to all movie details buttons
     document.querySelectorAll('.movie-card__details-btn').forEach(button => {
       button.addEventListener('click', () => {
         const movieId = +button.getAttribute("data-movie-id");
@@ -18,13 +19,39 @@
       });
     });
 
+    const starFull = "&#9733";
+    const starOutline = "&#9734";
+
+    // Convert movies rating values to stars
     document.querySelectorAll(".movie-card__rating").forEach(rating => {
-      const ratingValue = Math.ceil(+rating.innerHTML / 2);
-      const star = "&#9733"; // &#9733 is the star
+      const ratingValue = Math.floor(+rating.innerHTML) / 2;
       rating.innerHTML = "";
       for (let i = 0; i < 5; i++) {
-        rating.innerHTML += i <= ratingValue ? star : "&#9734"; // &#9734 is the star outline
+        rating.innerHTML += i <= ratingValue ? starFull : starOutline;
       }
+    });
+
+    // min rating filter input converted to selectable stars
+    currentRatingFilter = +document.querySelector("input[type=hidden]").value || 0;
+    ratingFilterStars = currentRatingFilter / 2 + 1;
+    document.querySelectorAll(".rating-star").forEach(star => {
+      if (star.getAttribute("data-rating") <= ratingFilterStars) {
+        star.innerHTML = starFull;
+      }
+    });
+
+    // Add event listeners to all rating stars
+    document.querySelectorAll(".rating-star").forEach(star => {
+      star.addEventListener("click", () => {
+        const rating = star.getAttribute("data-rating");
+        document.querySelectorAll(".rating-star").forEach(star => {
+          star.getAttribute("data-rating") <= rating
+            ? star.innerHTML = starFull
+            : star.innerHTML = starOutline;
+        });
+
+        document.querySelector("input[type=hidden]").value = (rating * 2) - 2;
+      });
     });
   });
 
@@ -40,15 +67,24 @@
 {% block content %}
 <h1>Liste des films</h1>
 <form action="{{ url_for('movies.home_movies') }}" method="GET">
-  <label>Sélectionnez des tags :</label><br>
-  {% for tag in available_tags %}
-  <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
-    checked {% endif %}{% endif %}>
-  {{ tag }}<br>
-  {% endfor %}
+  <h2>Filters</h2>
+  <label>Select tag(s)</label><br>
+  <div class="tags-filter-container">
+    {% for tag in available_tags %}
+    <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
+      checked {% endif %}{% endif %}>
+    {{ tag }}<br>
+    {% endfor %}
+  </div>
   <br>
-  <label>Note minimale :</label>
-  <input type="number" name="min_rating" min="0" max="10" value="{{ min_rating }}">
+  <input type="hidden" name="min_rating" value="{{ min_rating }}">
+  <div class="rating-stars">
+    <span data-rating="1" class="rating-star">&#9734;</span>
+    <span data-rating="2" class="rating-star">&#9734;</span>
+    <span data-rating="3" class="rating-star">&#9734;</span>
+    <span data-rating="4" class="rating-star">&#9734;</span>
+    <span data-rating="5" class="rating-star">&#9734;</span>
+  </div>
   <input type="submit" value="Filtrer">
 </form>
 <div class="movie-grid">
