@@ -65,61 +65,66 @@
 {% endblock %}
 
 {% block content %}
-<h1>Liste des films</h1>
-<form action="{{ url_for('movies.home_movies') }}" method="GET">
-  <h2>Filters</h2>
-  <label>Select tag(s)</label><br>
-  <div class="tags-filter-container">
-    {% for tag in available_tags %}
-    <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
-      checked {% endif %}{% endif %}>
-    {{ tag }}<br>
-    {% endfor %}
-  </div>
-  <br>
-  <input type="hidden" name="min_rating" value="{{ min_rating }}">
-  <div class="rating-stars">
-    <span data-rating="1" class="rating-star">&#9734;</span>
-    <span data-rating="2" class="rating-star">&#9734;</span>
-    <span data-rating="3" class="rating-star">&#9734;</span>
-    <span data-rating="4" class="rating-star">&#9734;</span>
-    <span data-rating="5" class="rating-star">&#9734;</span>
-  </div>
-  <input type="submit" value="Filtrer">
-</form>
-<div class="movie-grid">
-  {% for movie in movies %}
-  <div class="movie-card">
-    <img class="movie-card__image" src="{{movie.poster_url}}" alt="{{movie.title}} poster">
-    <h2 class="movie-card__title">{{ movie.title }}</h2>
-    <div class="movie-card__infos_container">
-      <p class="movie-card__date">{{ movie.release_date.year }}</p>
-      <p class="movie-card__rating">{{ movie.vote_average }}</p>
-    </div>
-    {% include 'components/favorites_component.html' %}
-    {% include 'components/watchlist_component.html' %}
-
-    <button class="btn movie-card__details-btn" data-movie-id="{{ movie.id }}">Details</button>
-
-    <div class="genre-tags">
-      {% for genre in movie.genre %}
-      <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
+<main>
+  <h1>Movie Picker</h1>
+  <form class="filter-form" action="{{ url_for('movies.home_movies') }}" method="GET">
+    <h2>Filters</h2>
+    <label>Select tag(s)</label><br>
+    <div class="tags-filter-container">
+      {% for tag in available_tags %}
+      <div class="tag-filter-container">
+        <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
+          checked {% endif %}{% endif %}>
+        <label for="{{ tag }}">{{ tag }}</label><br>
+      </div>
       {% endfor %}
     </div>
+    <br>
+    <label>Minimum rating</label><br>
+    <input type="hidden" name="min_rating" value="{{ min_rating }}">
+    <div class="rating-stars">
+      <span data-rating="1" class="rating-star">&#9734;</span>
+      <span data-rating="2" class="rating-star">&#9734;</span>
+      <span data-rating="3" class="rating-star">&#9734;</span>
+      <span data-rating="4" class="rating-star">&#9734;</span>
+      <span data-rating="5" class="rating-star">&#9734;</span>
+    </div>
+    <input type="submit" value="Filter" class="btn btn-submit">
+  </form>
+  <div class="movie-grid">
+    {% for movie in movies %}
+    <div class="movie-card">
+      <img class="movie-card__image" src="{{movie.poster_url}}" alt="{{movie.title}} poster">
+      <h2 class="movie-card__title">{{ movie.title }}</h2>
+      <div class="movie-card__infos_container">
+        <p class="movie-card__date">{{ movie.release_date.year }}</p>
+        <p class="movie-card__rating">{{ movie.vote_average }}</p>
+      </div>
+      {% include 'components/favorites_component.html' %}
+      {% include 'components/watchlist_component.html' %}
+
+      <button class="btn movie-card__details-btn" data-movie-id="{{ movie.id }}">Details</button>
+
+      <div class="genre-tags">
+        {% for genre in movie.genre %}
+        <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
-<div>
-  <p>Page {{ page }} / {{ total_pages }}</p>
-  {% if page > 1 %}
-  <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags, min_rating=min_rating) }}">Début</a>
-  <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags, min_rating=min_rating) }}">Précédent</a>
-  {% endif %}
-  {% if page < total_pages %} <a
-    href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags, min_rating=min_rating) }}">
-    Suivant
-    </a>
-    <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
+  <div>
+    <p>Page {{ page }} / {{ total_pages }}</p>
+    {% if page > 1 %}
+    <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags, min_rating=min_rating) }}">Début</a>
+    <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags, min_rating=min_rating) }}">Précédent</a>
     {% endif %}
-</div>
+    {% if page < total_pages %} <a
+      href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags, min_rating=min_rating) }}">
+      Suivant
+      </a>
+      <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
+      {% endif %}
+  </div>
+</main>
 {% endblock %}

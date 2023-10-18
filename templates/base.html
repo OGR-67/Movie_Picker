@@ -9,6 +9,9 @@
 
 <body>
   <nav>
+    {% if username %}
+    <span class="welcome-msg">Welcome {{ username }}</span>
+    {% endif %}
     <a href="{{ url_for('movies.home_movies') }}">Home</a>
     {% if not username %}
     <a href="{{ url_for('auth.login') }}">Login</a>
@@ -18,9 +21,6 @@
     <a href="{{ url_for('profile.profile') }}">Profile</a>
     {% endif %}
   </nav>
-  {% if username %}
-  <h2>Welcome {{ username }}</h2>
-  {% endif %}
 
   <div class="content">
     {% block content %}{% endblock %}

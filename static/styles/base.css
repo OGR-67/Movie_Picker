@@ -9,6 +9,28 @@ body {
     background-color: #222222;
 }
 
+main {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+h1 {
+    font-size: 5rem;
+    text-align: center;
+}
+
+nav {
+    background-color: #0d0d0d;
+    padding: 10px 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.welcome-msg {
+    margin-right: auto;
+}
+
 .btn {
     margin: 5px 0;
     padding: 4px 8px;
@@ -27,6 +49,11 @@ body {
 
 .add {
     background-color: #4caf50;
+    color: #fff;
+}
+
+.btn-submit {
+    background-color: #064273;
     color: #fff;
 }
 

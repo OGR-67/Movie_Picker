@@ -146,6 +146,7 @@ Movies:
 - [ ] 404 page
 - [ ] 500 page
 - [X] try except for all routes
+- [ ] responsive design
 
 ## Trouble Shooting
 
