@@ -14,13 +14,18 @@
     document.querySelectorAll('.movie-card__details-btn').forEach(button => {
       button.addEventListener('click', () => {
         const movieId = +button.getAttribute("data-movie-id");
-        console.log(movieId);
         window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
       });
     });
 
     const starFull = "&#9733";
     const starOutline = "&#9734";
+
+    // Add event listener to filters title
+    document.querySelector(".filters-title").addEventListener("click", () => {
+      document.querySelector(".filters-section").classList.toggle("hidden");
+      document.querySelector(".arrow").classList.toggle("rotate");
+    });
 
     // Convert movies rating values to stars
     document.querySelectorAll(".movie-card__rating").forEach(rating => {
@@ -49,7 +54,6 @@
             ? star.innerHTML = starFull
             : star.innerHTML = starOutline;
         });
-
         document.querySelector("input[type=hidden]").value = (rating * 2) - 2;
       });
     });
@@ -68,28 +72,30 @@
 <main>
   <h1>Movie Picker</h1>
   <form class="filter-form" action="{{ url_for('movies.home_movies') }}" method="GET">
-    <h2>Filters</h2>
-    <label>Select tag(s)</label><br>
-    <div class="tags-filter-container">
-      {% for tag in available_tags %}
-      <div class="tag-filter-container">
-        <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags %}
-          checked {% endif %}{% endif %}>
-        <label for="{{ tag }}">{{ tag }}</label><br>
+    <h2 class="filters-title">Filters <span class="arrow">&#x1F892;</span></h2>
+    <section class="filters-section hidden">
+      <p>Select tag(s)</p>
+      <div class="tags-filter-container">
+        {% for tag in available_tags %}
+        <div class="tag-filter-container">
+          <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags
+            %} checked {% endif %}{% endif %}>
+          <label for="{{ tag }}">{{ tag }}</label><br>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
-    <br>
-    <label>Minimum rating</label><br>
-    <input type="hidden" name="min_rating" value="{{ min_rating }}">
-    <div class="rating-stars">
-      <span data-rating="1" class="rating-star">&#9734;</span>
-      <span data-rating="2" class="rating-star">&#9734;</span>
-      <span data-rating="3" class="rating-star">&#9734;</span>
-      <span data-rating="4" class="rating-star">&#9734;</span>
-      <span data-rating="5" class="rating-star">&#9734;</span>
-    </div>
-    <input type="submit" value="Filter" class="btn btn-submit">
+      <br>
+      <label>Minimum rating</label><br>
+      <input type="hidden" name="min_rating" value="{{ min_rating }}">
+      <div class="rating-stars">
+        <span data-rating="1" class="rating-star">&#9734;</span>
+        <span data-rating="2" class="rating-star">&#9734;</span>
+        <span data-rating="3" class="rating-star">&#9734;</span>
+        <span data-rating="4" class="rating-star">&#9734;</span>
+        <span data-rating="5" class="rating-star">&#9734;</span>
+      </div>
+      <input type="submit" value="Filter" class="btn btn-submit">
+    </section>
   </form>
   <div class="movie-grid">
     {% for movie in movies %}
