@@ -1,17 +1,21 @@
 <form method="{{ method }}" action="{{ action }}">
   {{ form.hidden_tag() }}
   {% for field in fields %}
-  <div class="form-group">
-    <label for="{{ field.field_name }}">{{ field.label }}</label>
+  <div class="user-box">
     <input type="{{ field.input_type }}" class="form-control" id="{{ field.field_name }}" name="{{ field.field_name }}"
       {% if field.is_required %}required{% endif %}>
-    <p id="{{ field.field_name }}_errors" class="text-danger">
-      {% if errors and errors[field.field_name] %}
+    <label for="{{ field.field_name }}">{{ field.label }}</label>
+    {% if errors and errors[field.field_name] %}
+    <p id="{{ field.field_name }}_errors" class="field-error text-danger">
       {{ ", ".join(errors[field.field_name]) }}
-      {% endif %}
     </p>
+    {% endif %}
   </div>
   {% endfor %}
-  <div id="error-field" class="text-danger"></div>
-  <button type="submit" class="btn btn-primary">{{ submit_button_text }}</button>
+  {% if error %}
+  <p class="text-center text-danger mgt-0" role="alert">
+    {{ error_message }}
+  </p>
+  {% endif %}
+  <button type="submit" class="btn btn-submit">{{ submit_button_text }}</button>
 </form>

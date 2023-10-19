@@ -2,6 +2,8 @@
 
 {% block title %}Register{% endblock %}
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/form.css') }}">
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     try {
@@ -64,11 +66,9 @@
 {% set submit_button_text = "Register" %}
 {% set method = "POST" %}
 {% set action = url_for('auth.register') %}
-{% include "components/form.html" %}
+{% set error_message = "This username is already taken" %}
 
-{% if error %}
-<div class="alert alert-danger" role="alert">
-  This username is already taken
+<div class="form-box">
+  {% include "components/form.html" %}
 </div>
-{% endif %}
 {% endblock %}
