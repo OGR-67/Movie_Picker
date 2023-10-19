@@ -142,11 +142,11 @@ Movies:
 
 - [ ] image lazy loading
 - [X] pagination
-- [ ] style
-- [ ] 404 page
-- [ ] 500 page
+- [X] style
+- [X] 404 page
+- [X] 500 page
 - [X] try except for all routes
-- [ ] responsive design
+- [X] responsive design
 
 ## Trouble Shooting
 
