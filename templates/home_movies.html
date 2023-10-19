@@ -73,9 +73,9 @@
 {% block content %}
 <main>
   <h1>Movie Picker</h1>
-  <form class="filter-form" action="{{ url_for('movies.home_movies') }}" method="GET">
-    <h2 class="filters-title">Filters <a href="" class="arrow"><i class="fa-solid fa-caret-right"></i></a></h2>
-    <section class="filters-section hidden">
+  <h2 class="filters-title">Filters <a href="" class="arrow"><i class="fa-solid fa-caret-right"></i></a></h2>
+  <section class="filters-section hidden">
+    <form class="filter-form" action="{{ url_for('movies.home_movies') }}" method="GET">
       <p>Select tag(s)</p>
       <div class="tags-filter-container">
         {% for tag in available_tags %}
@@ -97,9 +97,9 @@
         <a href="" data-rating="5" class="rating-star">&#9734;</a>
       </div>
       <input type="submit" value="Filter" class="btn btn-submit">
-    </section>
-  </form>
-  <div class="movie-grid">
+    </form>
+  </section>
+  <section class="movie-grid">
     {% for movie in movies %}
     <div class="movie-card">
       <img class="movie-card__image" src="{{movie.poster_url}}" alt="{{movie.title}} poster">
@@ -125,19 +125,29 @@
       </div>
     </div>
     {% endfor %}
-  </div>
-  <div>
-    <p>Page {{ page }} / {{ total_pages }}</p>
-    {% if page > 1 %}
-    <a href="{{ url_for('movies.home_movies', page=1, tags=selected_tags, min_rating=min_rating) }}">Début</a>
-    <a href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags, min_rating=min_rating) }}">Précédent</a>
-    {% endif %}
-    {% if page < total_pages %} <a
-      href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags, min_rating=min_rating) }}">
-      Suivant
-      </a>
-      <a href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}">Fin</a>
+  </section>
+  <section class="pagination__container">
+    <p>
+      {% if page > 1 %}
+      <a title="Go to first page" aria-label="Go to first page"
+        href="{{ url_for('movies.home_movies', page=1, tags=selected_tags, min_rating=min_rating) }}"><i
+          class="fa-solid fa-backward-step"></i></a>
+      <a title="Go to previous page" aria-label="Go to previous page"
+        href="{{ url_for('movies.home_movies', page=page-1, tags=selected_tags, min_rating=min_rating) }}"><i
+          class="fa-solid fa-caret-left"></i></a>
       {% endif %}
-  </div>
+
+      Page {{ page }} / {{ total_pages }}
+
+      {% if page < total_pages %} <a title="Go to next page" aria-label="Go to next page"
+        href="{{ url_for('movies.home_movies', page=page+1, tags=selected_tags, min_rating=min_rating) }}">
+        <i class="fa-solid fa-caret-right"></i>
+        </a>
+        <a title="Go to last page" aria-label="Go to last page"
+          href="{{ url_for('movies.home_movies', page=total_pages, tags=selected_tags, min_rating=min_rating) }}"><i
+            class="fa-solid fa-forward-step"></i></a>
+        {% endif %}
+    </p>
+  </section>
 </main>
 {% endblock %}

@@ -16,8 +16,8 @@
 }
 
 .filters-title {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    margin: 0 0 10px 20px;
     cursor: pointer;
     user-select: none;
 }
@@ -45,4 +45,15 @@
 .rotate {
     transform: rotate(90deg);
     transform-origin: center;
+}
+
+.pagination__container {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.pagination__container > p {
+    letter-spacing: 2px;
+    font-size: 1.2rem;
 }
