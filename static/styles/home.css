@@ -27,15 +27,14 @@
 }
 
 .hidden {
-    height: 0;
+    max-height: 0;
     overflow: hidden;
     transform: scaleY(0);
-    transform-origin: top;
-    transition: all 0.2s ease-in-out;
 }
 
 .filters-section {
     transition: all 0.2s ease-in-out;
+    transform-origin: top;
 }
 
 .arrow {

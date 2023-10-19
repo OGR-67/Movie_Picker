@@ -19,6 +19,10 @@ h1 {
     text-align: center;
 }
 
+a {
+    text-decoration: none;
+}
+
 nav {
     background-color: #0d0d0d;
     padding: 10px 15px;
@@ -34,7 +38,7 @@ nav {
 .btn {
     margin: 5px 0;
     padding: 4px 8px;
-    font-size: 16px;
+    font-size: 1.5rem;
     border-radius: 3px;
     width: fit-content;
     cursor: pointer;
@@ -43,13 +47,19 @@ nav {
 }
 
 .remove {
-    background-color: #f44336;
     color: #fff;
 }
 
+.remove:hover {
+    background-color: #802424;
+}
+
 .add {
-    background-color: #4caf50;
     color: #fff;
+}
+
+.add:hover {
+    background-color: #235623;
 }
 
 .btn-submit {

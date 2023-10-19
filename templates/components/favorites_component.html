@@ -1,10 +1,11 @@
 {% if username %}
 {% if movie.id in favorite_movie_ids %}
 <div class="flex wrap">
-  <p>❤️</p>
-  <button class="btn remove remove-favorite" data-movie-id="{{ movie.id }}">Delete from favorites</button>
+  <a href="" class="btn remove remove-favorite" title="remove movie from favorite"
+    aria-label="remove movie from favorite" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-heart"></i></a>
 </div>
 {% else %}
-<button class="btn add add-favorite" data-movie-id="{{ movie.id }}">Add to favorites</button>
+<a href="" class="btn add add-favorite" title="Add movie to favorite" aria-label="Add movie to favorite"
+  data-movie-id="{{ movie.id }}"><i class="fa-regular fa-heart"></i></a>
 {% endif %}
 {% endif %}

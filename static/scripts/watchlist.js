@@ -10,6 +10,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
         });
+        button.addEventListener("mouseover", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-solid fa-eye-slash");
+        });
+        button.addEventListener("mouseout", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-solid fa-eye");
+
+        });
     });
 
     document.querySelectorAll(".add-watchlist").forEach((button) => {
@@ -21,6 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.location.reload();
                     }
                 });
+        });
+        button.addEventListener("mouseover", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-solid fa-plus");
+        });
+        button.addEventListener("mouseout", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-regular fa-eye");
         });
     });
 });

@@ -22,7 +22,8 @@
     const starOutline = "&#9734";
 
     // Add event listener to filters title
-    document.querySelector(".filters-title").addEventListener("click", () => {
+    document.querySelector(".filters-title").addEventListener("click", (event) => {
+      event.preventDefault();
       document.querySelector(".filters-section").classList.toggle("hidden");
       document.querySelector(".arrow").classList.toggle("rotate");
     });
@@ -47,7 +48,8 @@
 
     // Add event listeners to all rating stars
     document.querySelectorAll(".rating-star").forEach(star => {
-      star.addEventListener("click", () => {
+      star.addEventListener("click", (event) => {
+        event.preventDefault();
         const rating = star.getAttribute("data-rating");
         document.querySelectorAll(".rating-star").forEach(star => {
           star.getAttribute("data-rating") <= rating
@@ -72,7 +74,7 @@
 <main>
   <h1>Movie Picker</h1>
   <form class="filter-form" action="{{ url_for('movies.home_movies') }}" method="GET">
-    <h2 class="filters-title">Filters <span class="arrow">&#x1F892;</span></h2>
+    <h2 class="filters-title">Filters <a href="" class="arrow"><i class="fa-solid fa-caret-right"></i></a></h2>
     <section class="filters-section hidden">
       <p>Select tag(s)</p>
       <div class="tags-filter-container">
@@ -88,11 +90,11 @@
       <label>Minimum rating</label><br>
       <input type="hidden" name="min_rating" value="{{ min_rating }}">
       <div class="rating-stars">
-        <span data-rating="1" class="rating-star">&#9734;</span>
-        <span data-rating="2" class="rating-star">&#9734;</span>
-        <span data-rating="3" class="rating-star">&#9734;</span>
-        <span data-rating="4" class="rating-star">&#9734;</span>
-        <span data-rating="5" class="rating-star">&#9734;</span>
+        <a href="" data-rating="1" class="rating-star">&#9734;</a>
+        <a href="" data-rating="2" class="rating-star">&#9734;</a>
+        <a href="" data-rating="3" class="rating-star">&#9734;</a>
+        <a href="" data-rating="4" class="rating-star">&#9734;</a>
+        <a href="" data-rating="5" class="rating-star">&#9734;</a>
       </div>
       <input type="submit" value="Filter" class="btn btn-submit">
     </section>
@@ -101,20 +103,25 @@
     {% for movie in movies %}
     <div class="movie-card">
       <img class="movie-card__image" src="{{movie.poster_url}}" alt="{{movie.title}} poster">
-      <h2 class="movie-card__title">{{ movie.title }}</h2>
-      <div class="movie-card__infos_container">
-        <p class="movie-card__date">{{ movie.release_date.year }}</p>
-        <p class="movie-card__rating">{{ movie.vote_average }}</p>
-      </div>
-      {% include 'components/favorites_component.html' %}
-      {% include 'components/watchlist_component.html' %}
+      <div class="movie-card__content">
+        <h2 class="movie-card__title">{{ movie.title }}</h2>
+        <div class="movie-card__infos_container">
+          <p class="movie-card__date">{{ movie.release_date.year }}</p>
+          <p class="movie-card__rating">{{ movie.vote_average }}</p>
+        </div>
+        <div class="movie-card__buttons">
+          {% include 'components/favorites_component.html' %}
+          {% include 'components/watchlist_component.html' %}
 
-      <button class="btn movie-card__details-btn" data-movie-id="{{ movie.id }}">Details</button>
+          <button class="btn movie-card__details-btn" title="Go to movie details" aria-label="Go to movie details"
+            data-movie-id="{{ movie.id }}"><i class="fa-solid fa-circle-info"></i></button>
+        </div>
 
-      <div class="genre-tags">
-        {% for genre in movie.genre %}
-        <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
-        {% endfor %}
+        <div class="genre-tags">
+          {% for genre in movie.genre %}
+          <span class="genre-label genre-{{ genre|lower|replace(' ', '_') }}">{{genre}}</span>
+          {% endfor %}
+        </div>
       </div>
     </div>
     {% endfor %}

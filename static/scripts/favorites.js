@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
         });
+        button.addEventListener("mouseover", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-solid fa-heart-circle-xmark");
+        });
+        button.addEventListener("mouseout", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-solid fa-heart");
+        });
     });
 
     document.querySelectorAll(".add-favorite").forEach((button) => {
@@ -21,6 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.location.reload();
                     }
                 });
+        });
+        button.addEventListener("mouseover", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-solid fa-heart-circle-plus");
+        });
+        button.addEventListener("mouseout", () => {
+            const icon = button.firstChild;
+            icon.setAttribute("class", "fa-regular fa-heart");
         });
     });
 });

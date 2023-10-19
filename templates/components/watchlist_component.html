@@ -1,10 +1,11 @@
 {% if username %}
 {% if movie.id in watchlist_movie_ids %}
 <div class="flex wrap">
-  <p>👀</p>
-  <button class="btn remove remove-watchlist" data-movie-id="{{ movie.id }}">Delete from watchlists</button>
+  <a href="" class="btn remove remove-watchlist" title="remove movie from watchlist"
+    aria-label="remove movie from watchlist" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-eye"></i></a>
 </div>
 {% else %}
-<button class="btn add add-watchlist" data-movie-id="{{ movie.id }}">Add to watchlists</button>
+<a href="" class="btn add add-watchlist" title="Add movie to watchlist" aria-label="Add movie to watchlist"
+  data-movie-id="{{ movie.id }}"><i class="fa-regular fa-eye"></i></a>
 {% endif %}
 {% endif %}
