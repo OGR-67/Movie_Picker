@@ -12,6 +12,7 @@ body {
 main {
     margin: 0 auto;
     max-width: 1200px;
+    padding: 0 20px;
 }
 
 h1 {
@@ -44,6 +45,14 @@ nav {
     cursor: pointer;
     text-decoration: none;
     border: none;
+    transition: all 0.1s linear;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    -webkit-box-shadow: 4px 4px 24px -7px rgba(255, 255, 255, 0.3);
+    -moz-box-shadow: 4px 4px 24px -7px rgba(255, 255, 255, 0.3);
+    box-shadow: 4px 4px 24px -7px rgba(255, 255, 255, 0.3);
 }
 
 .remove {
@@ -63,6 +72,11 @@ nav {
 }
 
 .btn-submit {
+    background-color: #064273;
+    color: #fff;
+}
+
+.btn-previous {
     background-color: #064273;
     color: #fff;
 }

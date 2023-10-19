@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
-
 {% block title %}Movie Details{% endblock %}
+
 {% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/details.css') }}">
+<script src="{{ url_for('static', filename='scripts/stars.js') }}"></script>
 <script>
   const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
   const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
@@ -11,22 +13,39 @@
   function goBack() {
     window.history.back();
   }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const rating = document.querySelector(".movie-details__stars");
+    convertRatingToStars(rating);
+  });
 </script>
 <script src="{{ url_for('static', filename='scripts/favorites.js') }}" defer></script>
 <script src="{{ url_for('static', filename='scripts/watchlist.js') }}" defer></script>
 {% endblock %}
 {% block content %}
-<img src="{{movie.poster_url}}" alt="{{movie.title}} poster" style="height: 150px;">
-<h1>{{movie.title}}</h1>
-<p>{{movie.original_language}}</p>
-<p>{{movie.summary}}</p>
-<p>{{movie.release_date}}</p>
-<p>{{", ".join(movie.genre)}}</p>
-<p>{{movie.vote_average}}</p>
-{% include 'components/favorites_component.html' %}
-{% include 'components/watchlist_component.html' %}
+<main class="movie-details__page-layout">
+  <div class="movie-details__container">
+    <img src="{{movie.poster_url}}" alt="{{movie.title}} poster" class="movie-details__poster">
+    <section>
+      <header>
+        <div>
+          {% include 'components/favorites_component.html' %}
+          {% include 'components/watchlist_component.html' %}
+        </div>
+        <span class="movie-details__stars">{{movie.vote_average}}
+        </span>
+      </header>
+      <div>
+        <h1 class="movie-details__title">{{movie.title}}</h1>
+
+      </div>
+      <p>{{ movie.release_date.year }} - {{", ".join(movie.genre)}}</p>
+      <p>{{movie.summary}}</p>
+    </section>
+  </div>
+  <button onclick="goBack()" class="btn btn-previous">Previous</button>
+</main>
 
 
-<button onclick="goBack()">Previous</button>
 
 {% endblock %}

@@ -2,6 +2,7 @@
 
 {% block title %}Movies list{% endblock %}
 {% block head %}
+<script src="{{ url_for('static', filename='scripts/stars.js') }}"></script>
 <script>
   const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
   const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
@@ -30,11 +31,7 @@
 
     // Convert movies rating values to stars
     document.querySelectorAll(".movie-card__rating").forEach(rating => {
-      const ratingValue = Math.floor(+rating.innerHTML) / 2;
-      rating.innerHTML = "";
-      for (let i = 0; i < 5; i++) {
-        rating.innerHTML += i <= ratingValue ? starFull : starOutline;
-      }
+      convertRatingToStars(rating);
     });
 
     // min rating filter input converted to selectable stars
