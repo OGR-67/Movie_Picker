@@ -140,7 +140,7 @@ Movies:
 
 ## Optimizations
 
-- [ ] image lazy loading
+- [X] image lazy loading
 - [X] pagination
 - [X] style
 - [X] 404 page
