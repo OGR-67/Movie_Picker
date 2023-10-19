@@ -1,14 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-
-<body>
-  404 page
-</body>
-
-</html>
+{% block title %}404 Not Found{% endblock %}
+{% block head %}
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/error-page.css') }}">
+{% endblock %}
+{% block content %}
+<div class="http-error flex column evenly">
+  <h1>404 Not Found</h1>
+  <p class="text-center">The resource or page you're requesting could not be found.</p>
+  <button onclick="goBack()" class="btn btn-previous center ">Previous</button>
+</div>
+{% endblock %}
