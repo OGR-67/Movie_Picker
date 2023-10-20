@@ -40,7 +40,6 @@ nav {
 
 /* Button */
 .btn {
-    margin: 5px 0;
     padding: 4px 8px;
     font-size: 1.5rem;
     border-radius: 3px;
@@ -76,6 +75,11 @@ nav {
     color: #fff;
 }
 
+.btn-delete {
+    background-color: #b21e1e;
+    color: #fff;
+}
+
 /* Text */
 .text-danger {
     color: #b21e1e;
@@ -108,7 +112,12 @@ nav {
     margin-top: 0;
 }
 
+.mgt-40 {
+    margin-top: 40px;
+}
+
 .center {
     display: block;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
 }

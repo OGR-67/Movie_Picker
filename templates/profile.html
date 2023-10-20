@@ -3,28 +3,40 @@
 {% block head %}
 <script src="/static/scripts/profile-delete.js"></script>
 <script src="/static/scripts/profile-delete.js"></script>
+<link rel="stylesheet" href="/static/styles/profile.css">
 {% endblock %}
 {% block content %}
 {% if username %}
 <h1>{{ username }} profile</h1>
+<main>
+  <div>
+    <h2>Watchlist</h2>
+    <ul>
+      {% for movie in watchlist_movies %}
+      <li><a href="/{{ movie.id }}">{{ movie.title }}</a></li>
+      {% endfor %}
+      {% if not watchlist_movies %}
+      <li>You don't have any movie in your Watchlist</li>
+      {% endif %}
+    </ul>
+  </div>
+  <div>
+    <h2>favorites</h2>
+    <ul>
+      {% for movie in favorite_movies %}
+      <li><a href="/{{ movie.id }}">{{ movie.title }}</a></li>
+      {% endfor %}
+      {% if not favorite_movies %}
+      <li>You don't have any movie in your Favorites</li>
+      {% endif %}
+    </ul>
+  </div>
+  <button class="btn btn-delete mgt-40 center" id="delete-profile-button" data-user-id="{{ user_id }}">Delete
+    account</button>
 
-<h2>Watchlist</h2>
-<ul>
-  {% for movie in watchlist_movies %}
-  <li><a href="/{{ movie.id }}">{{ movie.title }}</a></li>
-  {% endfor %}
-</ul>
-<h2>favorites</h2>
-<ul>
-  {% for movie in favorite_movies %}
-  <li><a href="/{{ movie.id }}">{{ movie.title }}</a></li>
-  {% endfor %}
-</ul>
-
-<button id="delete-profile-button" data-user-id="{{ user_id }}">Delete profile</button>
-
-{% else %}
-<h1>Profile</h1>
-<p>You must login to access to your profile</p>
-{% endif %}
+  {% else %}
+  <h1>Profile</h1>
+  <p>You must login to access to your profile</p>
+  {% endif %}
+</main>
 {% endblock %}
