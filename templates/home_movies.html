@@ -3,63 +3,6 @@
 {% block title %}Movies list{% endblock %}
 {% block head %}
 <script src="{{ url_for('static', filename='scripts/stars.js') }}"></script>
-<script>
-  const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
-  const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
-
-  const add_to_watchlist_base_url = "{{ url_for('watchlist.add_movie') }}";
-  const remove_from_watchlist_base_url = "{{ url_for('watchlist.remove_movie') }}";
-
-  document.addEventListener("DOMContentLoaded", function () {
-    // Add event listeners to all movie details buttons
-    document.querySelectorAll('.movie-card__details-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        const movieId = +button.getAttribute("data-movie-id");
-        window.location.href = `{{ url_for('movies.movie_detail', movie_id=0) }}`.replace('0', movieId);
-      });
-    });
-
-    const starFull = "&#9733";
-    const starOutline = "&#9734";
-
-    // Add event listener to filters title
-    document.querySelector(".filters-title").addEventListener("click", (event) => {
-      event.preventDefault();
-      document.querySelector(".filters-section").classList.toggle("hidden");
-      document.querySelector(".arrow").classList.toggle("rotate");
-    });
-
-    // Convert movies rating values to stars
-    document.querySelectorAll(".movie-card__rating").forEach(rating => {
-      convertRatingToStars(rating);
-    });
-
-    // min rating filter input converted to selectable stars
-    currentRatingFilter = +document.querySelector("input[type=hidden]").value || 0;
-    ratingFilterStars = currentRatingFilter / 2 + 1;
-    document.querySelectorAll(".rating-star").forEach(star => {
-      if (star.getAttribute("data-rating") <= ratingFilterStars) {
-        star.innerHTML = starFull;
-      }
-    });
-
-    // Add event listeners to all rating stars
-    document.querySelectorAll(".rating-star").forEach(star => {
-      star.addEventListener("click", (event) => {
-        event.preventDefault();
-        const rating = star.getAttribute("data-rating");
-        document.querySelectorAll(".rating-star").forEach(star => {
-          star.getAttribute("data-rating") <= rating
-            ? star.innerHTML = starFull
-            : star.innerHTML = starOutline;
-        });
-        document.querySelector("input[type=hidden]").value = (rating * 2) - 2;
-      });
-    });
-  });
-
-
-</script>
 <script src="{{ url_for('static', filename='scripts/favorites.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/watchlist.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/home.js') }}"></script>
@@ -69,6 +12,8 @@
 {% endblock %}
 
 {% block content %}
+<div class="home-datas" data-generic_movie_detail_url="{{ url_for('movies.movie_detail', movie_id=0) }}"
+  style="display: none;"></div>
 <main>
   <h1>Movie Picker</h1>
   <h2 class="filters-title">Filters <a href="" class="arrow"><i class="fa-solid fa-caret-right"></i></a></h2>
@@ -78,9 +23,10 @@
       <div class="tags-filter-container">
         {% for tag in available_tags %}
         <div class="tag-filter-container">
-          <input type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None %} {% if tag in selected_tags
-            %} checked {% endif %}{% endif %}>
-          <label for="{{ tag }}">{{ tag }}</label><br>
+          <input id="{{ tag }}" type="checkbox" name="tags" value="{{ tag }}" {% if selected_tags !=None and tag in
+            selected_tags %} checked {% endif %}>
+          <label for="{{ tag }}">{{ tag }}</label>
+          <br>
         </div>
         {% endfor %}
       </div>

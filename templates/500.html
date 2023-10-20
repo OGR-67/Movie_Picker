@@ -2,11 +2,7 @@
 
 {% block title %}404 Not Found{% endblock %}
 {% block head %}
-<script>
-  function goBack() {
-    window.history.back();
-  }
-</script>
+<script src="/static/scripts/previous.js"></script>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/error-page.css') }}">
 {% endblock %}
 {% block content %}

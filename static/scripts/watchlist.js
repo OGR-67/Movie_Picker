@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const add_to_watchlist_base_url = document.querySelector(".watchlist-datas").getAttribute("data-add-url");
+    const remove_from_watchlist_base_url = document.querySelector(".watchlist-datas").getAttribute("data-remove-url");
     document.querySelectorAll(".remove-watchlist").forEach((button) => {
         button.addEventListener("click", () => {
             const movieId = +button.getAttribute("data-movie-id");

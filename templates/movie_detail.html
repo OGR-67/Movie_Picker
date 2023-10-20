@@ -4,21 +4,8 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/details.css') }}">
 <script src="{{ url_for('static', filename='scripts/stars.js') }}"></script>
-<script>
-  const add_to_fav_base_url = "{{ url_for('favorites.add_movie') }}";
-  const remove_from_fav_base_url = "{{ url_for('favorites.remove_movie') }}";
-  const add_to_watchlist_base_url = "{{ url_for('watchlist.add_movie') }}";
-  const remove_from_watchlist_base_url = "{{ url_for('watchlist.remove_movie') }}";
-
-  function goBack() {
-    window.history.back();
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const rating = document.querySelector(".movie-details__stars");
-    convertRatingToStars(rating);
-  });
-</script>
+<script src="/static/scripts/previous.js"></script>
+<script src="/static/scripts/details.js"></script>
 <script src="{{ url_for('static', filename='scripts/favorites.js') }}" defer></script>
 <script src="{{ url_for('static', filename='scripts/watchlist.js') }}" defer></script>
 {% endblock %}
@@ -46,7 +33,7 @@
       </div>
     </section>
   </div>
-  <button onclick="goBack()" class="btn btn-previous">Previous</button>
+  <button onclick="goBack()" class="btn btn-previous mgt-40">Previous</button>
 </main>
 
 

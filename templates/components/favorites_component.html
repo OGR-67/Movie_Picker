@@ -1,9 +1,9 @@
+<div class="favorite-datas" data-add-url="{{ url_for('favorites.add_movie') }}"
+  data-remove-url="{{ url_for('favorites.remove_movie') }}" style="display: none;"></div>
 {% if username %}
 {% if movie.id in favorite_movie_ids %}
-<div class="flex wrap">
-  <a href="" class="btn remove remove-favorite" title="remove movie from favorite"
-    aria-label="remove movie from favorite" data-movie-id="{{ movie.id }}"><i class="fa-solid fa-heart"></i></a>
-</div>
+<a href="" class="btn remove remove-favorite" title="remove movie from favorite" aria-label="remove movie from favorite"
+  data-movie-id="{{ movie.id }}"><i class="fa-solid fa-heart"></i></a>
 {% else %}
 <a href="" class="btn add add-favorite" title="Add movie to favorite" aria-label="Add movie to favorite"
   data-movie-id="{{ movie.id }}"><i class="fa-regular fa-heart"></i></a>

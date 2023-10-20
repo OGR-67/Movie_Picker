@@ -1,4 +1,7 @@
+
 document.addEventListener("DOMContentLoaded", function () {
+    const add_to_fav_base_url = document.querySelector(".favorite-datas").getAttribute("data-add-url");
+    const remove_from_fav_base_url = document.querySelector(".favorite-datas").getAttribute("data-remove-url");
     document.querySelectorAll(".remove-favorite").forEach((button) => {
         button.addEventListener("click", () => {
             const movieId = +button.getAttribute("data-movie-id");

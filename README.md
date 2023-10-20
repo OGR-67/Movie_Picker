@@ -70,11 +70,10 @@ To implement the hexagonal architecture in Python in a strongly-typed manner, I'
 
 mypy is used for type checking
 
+mypy deamon can be used in association with vscode to check for errors while coding using [this](https://marketplace.visualstudio.com/items?itemName=matangover.mypy) extension
+
 - run `export PROJECT_DIR=$(pwd)`
 - run `dmypy run` to run mypy daemon
-
-You can now run `dmypy status` to check for errors
-Or `dmypy check` to check for errors and exit
 
 ## Set up database
 
@@ -152,4 +151,4 @@ Movies:
 
 ### 1. Error: Could not run pytest or pytest-watch
 
-Try to run `export PYTHONPATH=.` when on root directory of the project. `pwt` or `pytest` should work after that.
+Try to run `export PYTHONPATH=.` when on root directory of the project. `ptw` or `pytest` should work after that.

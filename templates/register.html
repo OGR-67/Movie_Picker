@@ -4,45 +4,11 @@
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/form.css') }}">
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    try {
-      console.log("{{ errors }}");
-      form_errors = JSON.parse("{{ errors }}");
-      console.log(form_errors);
-      for (const [key, value] of Object.entries(form_errors)) {
-        const errorField = document.getElementById(key + '_errors');
-        errorField.textContent = value.join(' ');
-      }
-    } catch { }
-
-
-    const passwordField = document.getElementById('password');
-    const password2Field = document.getElementById('password2');
-
-    const errorField = document.getElementById('error-field');
-
-    function checkPasswords() {
-      const password = passwordField.value;
-      const password2 = password2Field.value;
-
-      if (password === password2 || password2 === '') {
-        errorField.textContent = '';
-      } else {
-        errorField.textContent = 'Les mots de passe ne correspondent pas';
-      }
-    }
-
-    passwordField.addEventListener('input', checkPasswords);
-    password2Field.addEventListener('input', checkPasswords);
-
-
-  });
-</script>
+<script src="/static/scripts/register.js"></script>
 {% endblock %}
 
 {% block content %}
-
+<div class="register-datas" data-errors="{{ errors }}" style="display: none;"></div>
 <h1>Register</h1>
 
 {% set fields = [{
