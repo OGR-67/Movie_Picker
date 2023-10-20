@@ -63,6 +63,8 @@ To implement the hexagonal architecture in Python in a strongly-typed manner, I'
 - create a virtual environment
 - activate the virtual environment
 - install dependencies with `pip install -r requirements.txt`
+- set up database (see related chapter)
+- feed database (see related chapter)
 
 ### Optional
 
@@ -152,3 +154,11 @@ Movies:
 ### 1. Error: Could not run pytest or pytest-watch
 
 Try to run `export PYTHONPATH=.` when on root directory of the project. `ptw` or `pytest` should work after that.
+
+### 2. Error: 500 error page on lauch
+
+Have you correctly set up and feed database? Follow instructions in related chapter of this documentation.
+
+### 3. Error: ModuleNotFoundError: No module named 'flask'
+
+Be sure to run the `pip install` and `python app.py` with the same version of python.
